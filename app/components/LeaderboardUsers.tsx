@@ -9,7 +9,7 @@ interface LeaderboardUser {
     rank: string;
 }
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL; // z .env
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function LeaderboardUsers() {
     const [allUsers, setAllUsers] = useState<LeaderboardUser[]>([]);
@@ -17,18 +17,16 @@ export default function LeaderboardUsers() {
     const [seriesUsers, setSeriesUsers] = useState<LeaderboardUser[]>([]);
 
     useEffect(() => {
+        console.log("API URL used:", apiUrl);
+
         const fetchLeaderboard = async (type: "all" | "movie" | "series") => {
             try {
                 const res = await fetch(`${apiUrl}/api/leaderboard?type=${type}`);
+                if (!res.ok) throw new Error(`Failed to fetch leaderboard (${type})`);
 
-                if (!res.ok) {
-                    console.error(`Failed to fetch leaderboard (${type}):`, res.statusText);
-                    return [];
-                }
-
-                return res.json();
+                return await res.json();
             } catch (err) {
-                console.error(`Error fetching leaderboard (${type}):`, err);
+                console.error(err);
                 return [];
             }
         };
@@ -50,7 +48,6 @@ export default function LeaderboardUsers() {
 
     const renderTable = (title: string, data: LeaderboardUser[]) => (
         <div className="mb-8 lg:mb-0 lg:flex-1 bg-black/70 lg:border border-gray-700 rounded-lg shadow-md overflow-hidden min-w-[400px] max-w-[650px] mx-auto">
-
             <h2 className="text-lg md:text-xl text-center font-bold px-4 py-3 bg-gray-800 animate-gradient-red border-b border-gray-700">
                 {title}
             </h2>
@@ -66,10 +63,7 @@ export default function LeaderboardUsers() {
                     </thead>
                     <tbody>
                         {data.map((user, idx) => (
-                            <tr
-                                key={user.id}
-                                className={idx % 2 === 0 ? "bg-black/70" : "bg-gray-900/70"}
-                            >
+                            <tr key={user.id} className={idx % 2 === 0 ? "bg-black/70" : "bg-gray-900/70"}>
                                 <td className="px-3 py-2 border-r border-gray-700 text-yellow-400 text-center">{idx + 1}</td>
                                 <td className="px-3 py-2 border-r border-gray-700 font-semibold tracking-wide text-center">{user.username}</td>
                                 <td className="px-3 py-2 border-r border-gray-700 text-center">{user.votes_count}</td>
@@ -89,28 +83,14 @@ export default function LeaderboardUsers() {
         </div>
     );
 
-   return (
-<div className="w-full mx-auto">
-    <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-200">Top Voters & Rankings</h2>
-  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-
-    <div className="w-full overflow-x-auto">
-      {renderTable("Film & Series Champions", allUsers)}
-    </div>
-
-    <div className="w-full overflow-x-auto">
-      {renderTable("Movie Masters", movieUsers)}
-    </div>
-
-    <div className="w-full overflow-x-auto">
-      {renderTable("Serial Experts", seriesUsers)}
-    </div>
-
-  </div>
-</div>
-
-
-);
-
-
+    return (
+        <div className="w-full mx-auto">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-200">Top Voters & Rankings</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                {renderTable("Film & Series Champions", allUsers)}
+                {renderTable("Movie Masters", movieUsers)}
+                {renderTable("Serial Experts", seriesUsers)}
+            </div>
+        </div>
+    );
 }
