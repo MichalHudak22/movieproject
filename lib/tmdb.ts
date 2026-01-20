@@ -1,6 +1,10 @@
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
+if (!API_KEY) {
+  console.warn("TMDB API key is missing! Fetches will fail.");
+}
+
 /* =====================================================================================
    HELPER – FETCH VIAC STRÁN (TMDB má max 20 / page)
 ===================================================================================== */
@@ -9,6 +13,8 @@ async function fetchMultiplePages(
   totalResults: number,
   language = "en-US"
 ) {
+  if (!API_KEY) return []; // ak nie je API key, vrátime prázdne pole
+
   const results: any[] = [];
   let page = 1;
 
@@ -17,7 +23,10 @@ async function fetchMultiplePages(
       `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=${language}&page=${page}`
     );
 
-    if (!res.ok) throw new Error("TMDB fetch failed");
+    if (!res.ok) {
+      console.error(`TMDB fetch failed at ${endpoint}, page ${page}`);
+      return results; // vrátime to, čo sme stihli nazbierať
+    }
 
     const data = await res.json();
     results.push(...data.results);
@@ -28,6 +37,7 @@ async function fetchMultiplePages(
 
   return results.slice(0, totalResults);
 }
+
 
 /* =====================================================================================
    FILMY
