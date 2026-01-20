@@ -18,55 +18,54 @@ export default function HomeTopRatedByUsers() {
   const [topMovies, setTopMovies] = useState<any[]>([]);
   const [topSeries, setTopSeries] = useState<any[]>([]);
 
-  useEffect(() => {
-    async function fetchTopRatings() {
-      try {
-        // MOVIES
-        const movieRes = await fetch(
-          "http://localhost:5000/api/ratings/top?type=movie"
-        );
-        const movies = await movieRes.json();
+ useEffect(() => {
+  async function fetchTopRatings() {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-        const moviesWithDetails = await Promise.all(
-          movies.map(async (m: any) => {
-            const detail = await fetchTmdbDetail(m.imdb_id, "movie");
-            if (!detail) return null;
-            return {
-              ...detail,
-              averageRating: m.averageRating,
-              votes: m.votes,
-            };
-          })
-        );
+      // MOVIES
+      const movieRes = await fetch(`${apiUrl}/api/ratings/top?type=movie`);
+      const movies = await movieRes.json();
 
-        setTopMovies(moviesWithDetails.filter(Boolean));
+      const moviesWithDetails = await Promise.all(
+        movies.map(async (m: any) => {
+          const detail = await fetchTmdbDetail(m.imdb_id, "movie");
+          if (!detail) return null;
+          return {
+            ...detail,
+            averageRating: m.averageRating,
+            votes: m.votes,
+          };
+        })
+      );
 
-        // SERIES
-        const seriesRes = await fetch(
-          "http://localhost:5000/api/ratings/top?type=series"
-        );
-        const series = await seriesRes.json();
+      setTopMovies(moviesWithDetails.filter(Boolean));
 
-        const seriesWithDetails = await Promise.all(
-          series.map(async (s: any) => {
-            const detail = await fetchTmdbDetail(s.imdb_id, "series");
-            if (!detail) return null;
-            return {
-              ...detail,
-              averageRating: s.averageRating,
-              votes: s.votes,
-            };
-          })
-        );
+      // SERIES
+      const seriesRes = await fetch(`${apiUrl}/api/ratings/top?type=series`);
+      const series = await seriesRes.json();
 
-        setTopSeries(seriesWithDetails.filter(Boolean));
-      } catch (err) {
-        console.error("Error fetching user ratings:", err);
-      }
+      const seriesWithDetails = await Promise.all(
+        series.map(async (s: any) => {
+          const detail = await fetchTmdbDetail(s.imdb_id, "series");
+          if (!detail) return null;
+          return {
+            ...detail,
+            averageRating: s.averageRating,
+            votes: s.votes,
+          };
+        })
+      );
+
+      setTopSeries(seriesWithDetails.filter(Boolean));
+    } catch (err) {
+      console.error("Error fetching user ratings:", err);
     }
+  }
 
-    fetchTopRatings();
-  }, []);
+  fetchTopRatings();
+}, []);
+
 
   return (
     <>

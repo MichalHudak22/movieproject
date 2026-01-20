@@ -5,6 +5,8 @@ import { getMoviesByGenre } from "@/lib/tmdb";
 import SectionRowClient from "@/app/components/SectionRowClient";
 import GenreFilter from "@/app/components/GenreFilter";
 
+const API = process.env.NEXT_PUBLIC_API_URL; // 🔥 jednotné URL
+
 const categories = [
   { id: 28, name: "Action" },
   { id: 18, name: "Drama" },
@@ -21,63 +23,61 @@ export default function CategoriesPage() {
   const [topMovies, setTopMovies] = useState<any[]>([]);
   const [topSeries, setTopSeries] = useState<any[]>([]);
 
+  async function fetchTmdbDetail(id: string, type: "movie" | "series") {
+    const tmdbType = type === "series" ? "tv" : "movie";
 
+    const res = await fetch(
+      `https://api.themoviedb.org/3/${tmdbType}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+    );
 
-async function fetchTmdbDetail(id: string, type: "movie" | "series") {
-  const tmdbType = type === "series" ? "tv" : "movie";
-
-  const res = await fetch(
-    `https://api.themoviedb.org/3/${tmdbType}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-  );
-
-  if (!res.ok) return null;
-  return res.json();
-}
-
+    if (!res.ok) return null;
+    return res.json();
+  }
 
   useEffect(() => {
-async function fetchTopRatings() {
-  try {
-    // MOVIES
-    const movieRes = await fetch("http://localhost:5000/api/ratings/top?type=movie");
-    const movies = await movieRes.json();
+    async function fetchTopRatings() {
+      try {
+        // Movies
+        const movieRes = await fetch(`${API}/api/ratings/top?type=movie`);
+        const movies = await movieRes.json();
 
-    const moviesWithDetails = await Promise.all(
-      movies.map(async (m: any) => {
-        const detail = await fetchTmdbDetail(m.imdb_id, "movie");
-        if (!detail) return null;
-        return {
-          ...detail,
-          averageRating: m.averageRating,
-          votes: m.votes,
-        };
-      })
-    );
+        const moviesWithDetails = await Promise.all(
+          movies.map(async (m: any) => {
+            const detail = await fetchTmdbDetail(m.imdb_id, "movie");
+            if (!detail) return null;
 
-    setTopMovies(moviesWithDetails.filter(Boolean));
+            return {
+              ...detail,
+              averageRating: m.averageRating,
+              votes: m.votes,
+            };
+          })
+        );
 
-    // SERIES
-    const seriesRes = await fetch("http://localhost:5000/api/ratings/top?type=series");
-    const series = await seriesRes.json();
+        setTopMovies(moviesWithDetails.filter(Boolean));
 
-    const seriesWithDetails = await Promise.all(
-      series.map(async (s: any) => {
-        const detail = await fetchTmdbDetail(s.imdb_id, "series");
-        if (!detail) return null;
-        return {
-          ...detail,
-          averageRating: s.averageRating,
-          votes: s.votes,
-        };
-      })
-    );
+        // Series
+        const seriesRes = await fetch(`${API}/api/ratings/top?type=series`);
+        const series = await seriesRes.json();
 
-    setTopSeries(seriesWithDetails.filter(Boolean));
-  } catch (err) {
-    console.error("Error fetching top ratings:", err);
-  }
-}
+        const seriesWithDetails = await Promise.all(
+          series.map(async (s: any) => {
+            const detail = await fetchTmdbDetail(s.imdb_id, "series");
+            if (!detail) return null;
 
+            return {
+              ...detail,
+              averageRating: s.averageRating,
+              votes: s.votes,
+            };
+          })
+        );
+
+        setTopSeries(seriesWithDetails.filter(Boolean));
+      } catch (err) {
+        console.error("Error fetching top ratings:", err);
+      }
+    }
 
     async function fetchGenres() {
       try {
@@ -87,7 +87,7 @@ async function fetchTopRatings() {
             return { name: cat.name, items: res.results };
           })
         );
-        console.log("Fetched genre data:", data);
+
         setGenreData(data);
       } catch (err) {
         console.error("Error fetching genre data:", err);
@@ -111,23 +111,20 @@ async function fetchTopRatings() {
 
       <GenreFilter />
 
-      {/* Top Rated Movies */}
       {topMovies.length > 0 && (
         <SectionRowClient title="Top Rated Movies by Our Users" items={topMovies} type="movie" />
       )}
 
-      {/* Top Rated Series */}
       {topSeries.length > 0 && (
         <SectionRowClient title="Top Rated Series by Our Users" items={topSeries} type="series" />
       )}
 
-      {/* TMDB Genres */}
       {genreData.map((genre) => (
         <SectionRowClient
           key={genre.name}
           title={genre.name}
           items={genre.items}
-          type="movie" // TMDB fetchujeme ako "movie"
+          type="movie"
         />
       ))}
     </div>

@@ -13,23 +13,25 @@ export default function DeleteAccount({ token, onAccountDeleted }: DeleteAccount
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/me", {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Delete failed");
+  setLoading(true);
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      setModalOpen(false);
-      onAccountDeleted();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete account");
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (!res.ok) throw new Error("Delete failed");
+
+    setModalOpen(false);
+    onAccountDeleted();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete account");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 return (
   <div className="mt-10 max-w-xl mx-auto">

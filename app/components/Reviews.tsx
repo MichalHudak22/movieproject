@@ -40,22 +40,29 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
   }, [user]);
 
   // --- Načítanie recenzií a hodnotení ---
-  const fetchReviewsAndRatings = async () => {
-    try {
-      console.log("Fetching reviews and ratings for movieId:", movieId);
-      const resReviews = await fetch(`http://localhost:5000/api/reviews?movie_id=${movieId}`);
-      const dataReviews = await resReviews.json();
-      console.log("Reviews fetched:", dataReviews);
-      setReviews(dataReviews);
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const resRatings = await fetch(`http://localhost:5000/api/ratings/${movieId}`);
-      const dataRatings = await resRatings.json();
-      console.log("Ratings fetched:", dataRatings);
-      setRatings(dataRatings);
-    } catch (err) {
-      console.error("Failed to fetch reviews or ratings:", err);
-    }
-  };
+const fetchReviewsAndRatings = async () => {
+  try {
+    console.log("Fetching reviews and ratings for movieId:", movieId);
+
+    // --- Reviews ---
+    const resReviews = await fetch(`${apiUrl}/api/reviews?movie_id=${movieId}`);
+    const dataReviews = await resReviews.json();
+    console.log("Reviews fetched:", dataReviews);
+    setReviews(dataReviews);
+
+    // --- Ratings ---
+    const resRatings = await fetch(`${apiUrl}/api/ratings/${movieId}`);
+    const dataRatings = await resRatings.json();
+    console.log("Ratings fetched:", dataRatings);
+    setRatings(dataRatings);
+
+  } catch (err) {
+    console.error("Failed to fetch reviews or ratings:", err);
+  }
+};
+
 
   useEffect(() => {
     fetchReviewsAndRatings();

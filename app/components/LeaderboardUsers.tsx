@@ -9,6 +9,8 @@ interface LeaderboardUser {
     rank: string;
 }
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL; // z .env
+
 export default function LeaderboardUsers() {
     const [allUsers, setAllUsers] = useState<LeaderboardUser[]>([]);
     const [movieUsers, setMovieUsers] = useState<LeaderboardUser[]>([]);
@@ -17,7 +19,7 @@ export default function LeaderboardUsers() {
     useEffect(() => {
         const fetchLeaderboard = async (type: "all" | "movie" | "series") => {
             try {
-                const res = await fetch(`http://localhost:5000/api/leaderboard?type=${type}`);
+                const res = await fetch(`${apiUrl}/api/leaderboard?type=${type}`);
 
                 if (!res.ok) {
                     console.error(`Failed to fetch leaderboard (${type}):`, res.statusText);
