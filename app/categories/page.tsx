@@ -105,7 +105,7 @@ export default function CategoriesPage() {
           Browse by <span className="text-red-700 animate-gradient-red">Categories</span>
         </h1>
         <p className="text-md lg:text-2xl text-gray-200 animate-gradient-lighted pt-2">
-          Discover movies from every genre and find your next unforgettable story.
+          Discover movies from every genre and find your next unforgettable storyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy.
         </p>
       </div>
 
