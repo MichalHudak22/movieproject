@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
 import DraggableRow from "@/app/components/DraggableRow";
 import SearchBar from "@/app/components/SearchBar";

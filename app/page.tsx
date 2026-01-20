@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { getTrendingMovies, getPopularMovies, getTopRatedMovies, getTopRatedTV } from "@/lib/tmdb";
 import Link from "next/link";
 import SearchBar from "@/app/components/SearchBar";
