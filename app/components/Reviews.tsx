@@ -3,6 +3,8 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 interface Review {
   id: number;
   user_id: number;
@@ -34,73 +36,76 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
 
+
   // --- Log aktuálneho používateľa z kontextu
   useEffect(() => {
     console.log("Current user from context:", user);
   }, [user]);
 
   // --- Načítanie recenzií a hodnotení ---
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const fetchReviewsAndRatings = async () => {
-  try {
-    console.log("Fetching reviews and ratings for movieId:", movieId);
+  const fetchReviewsAndRatings = async () => {
+    try {
+      console.log("Fetching reviews and ratings for movieId:", movieId);
 
-    // --- Reviews ---
-    const resReviews = await fetch(`${apiUrl}/api/reviews?movie_id=${movieId}`);
-    const dataReviews = await resReviews.json();
-    console.log("Reviews fetched:", dataReviews);
-    setReviews(dataReviews);
+      // --- Reviews ---
+      const resReviews = await fetch(`${apiUrl}/api/reviews?movie_id=${movieId}`);
+      const dataReviews = await resReviews.json();
+      console.log("Reviews fetched:", dataReviews);
+      setReviews(dataReviews);
 
-    // --- Ratings ---
-    const resRatings = await fetch(`${apiUrl}/api/ratings/${movieId}`);
-    const dataRatings = await resRatings.json();
-    console.log("Ratings fetched:", dataRatings);
-    setRatings(dataRatings);
+      // --- Ratings ---
+      const resRatings = await fetch(`${apiUrl}/api/ratings/${movieId}`);
+      const dataRatings = await resRatings.json();
+      console.log("Ratings fetched:", dataRatings);
+      setRatings(dataRatings);
 
-  } catch (err) {
-    console.error("Failed to fetch reviews or ratings:", err);
-  }
-};
+    } catch (err) {
+      console.error("Failed to fetch reviews or ratings:", err);
+    }
+  };
 
 
   useEffect(() => {
     fetchReviewsAndRatings();
   }, [movieId]);
 
-// --- Pridanie novej recenzie ---
-const handleAddReview = async () => {
-  if (!actualToken || !newReview.trim()) return;
-  setLoading(true);
-  console.log("Adding review:", newReview, "Token:", actualToken);
+  // --- Pridanie novej recenzie ---
+  const handleAddReview = async () => {
+    if (!actualToken || !newReview.trim()) return;
+    setLoading(true);
+    console.log("Adding review:", newReview, "Token:", actualToken);
 
-  try {
-    const res = await fetch("http://localhost:5000/api/reviews", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${actualToken}`,
-      },
-      body: JSON.stringify({ movie_id: movieId, content: newReview }),
-    });
+    try {
+      const res = await fetch(`${apiUrl}/api/reviews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${actualToken}`,
+        },
+        body: JSON.stringify({ movie_id: movieId, content: newReview }),
+      });
 
-    const data = await res.json(); // <-- načítame JSON z backendu
 
-    if (!res.ok) throw new Error(data.error || "Failed to add review"); 
-    // <-- použije správu z backendu, ak existuje, inak default
 
-    console.log("Review added successfully");
-    await fetchReviewsAndRatings();
-    setNewReview("");
-  } catch (err: any) {
-    console.error(err);
+      const data = await res.json(); // <-- načítame JSON z backendu
 
-    // Tu môžeš pridať kreatívnu hlášku
-    alert(err.message || "Please behave! Your review contains inappropriate language.");
-  } finally {
-    setLoading(false);
-  }
-};
+      if (!res.ok) throw new Error(data.error || "Failed to add review");
+      // <-- použije správu z backendu, ak existuje, inak default
+
+      console.log("Review added successfully");
+      await fetchReviewsAndRatings();
+      setNewReview("");
+    } catch (err: any) {
+      console.error(err);
+
+      // Tu môžeš pridať kreatívnu hlášku
+      alert(err.message || "Please behave! Your review contains inappropriate language.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   // --- Vracia rating používateľa podľa user_id ---
@@ -128,10 +133,11 @@ const handleAddReview = async () => {
     console.log("Deleting reviewId:", selectedReviewId, "Token:", actualToken);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/${selectedReviewId}`, {
+      const res = await fetch(`${apiUrl}/api/reviews/${selectedReviewId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${actualToken}` },
       });
+
 
       console.log("Delete response:", res);
       if (!res.ok) throw new Error("Failed to delete review");

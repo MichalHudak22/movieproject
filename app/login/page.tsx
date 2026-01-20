@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AuthContext } from "../context/AuthContext"; // cesta k AuthContext
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,11 +22,12 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
 
       const data = await res.json();
       setMessage(data.message);
@@ -86,7 +89,7 @@ export default function LoginPage() {
         </button>
 
         <p className="mt-4 text-center text-gray-300">
-         Don&apos;t have an account?{" "}
+          Don&apos;t have an account?{" "}
 
           <Link href="/register" className="text-red-600 hover:text-red-500">
             Register here
@@ -95,9 +98,8 @@ export default function LoginPage() {
 
         {message && (
           <p
-            className={`mt-4 text-center text-sm ${
-              verified === "1" ? "text-green-500" : "text-red-500"
-            }`}
+            className={`mt-4 text-center text-sm ${verified === "1" ? "text-green-500" : "text-red-500"
+              }`}
           >
             {message}
           </p>

@@ -29,7 +29,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
   const [activeScreenshot, setActiveScreenshot] = useState<number | null>(null);
   const [ratingsCount, setRatingsCount] = useState(0);
 
-
+  const API = process.env.NEXT_PUBLIC_API_URL; // 🔥 použijeme jednotné API
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +47,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
       // fetch all ratings for this movie
       // fetch all ratings for this movie
       try {
-        const res = await fetch(`http://localhost:5000/api/ratings/${movieData.id}`);
+        const res = await fetch(`${API}/api/ratings/${movieData.id}`);
         const data = await res.json();
 
 
@@ -66,7 +66,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
 
         // fetch current user's rating
         if (token) {
-          const userRes = await fetch("http://localhost:5000/api/ratings/me", {
+          const userRes = await fetch(`${API}/api/ratings/me`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const myRatings = await userRes.json();
@@ -86,7 +86,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
     setUserRating(value);
 
     try {
-      await fetch("http://localhost:5000/api/ratings", {
+      await fetch(`${API}/api/ratings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,8 +95,8 @@ export default function MovieDetail({ params }: MovieDetailProps) {
         body: JSON.stringify({ imdb_id: movie.id.toString(), type: "movie", rating: value }),
       });
 
-      // znovu načítať všetky hodnotenia pre priemer
-      const res = await fetch(`http://localhost:5000/api/ratings/${movie.id}`);
+      // reload average rating
+      const res = await fetch(`${API}/api/ratings/${movie.id}`);
       const data = await res.json();
       if (data.length > 0) {
         const avg = data.reduce((acc: number, r: any) => acc + r.rating, 0) / data.length;

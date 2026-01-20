@@ -7,6 +7,8 @@ import { getMovieDetails, getTVDetails } from "@/lib/tmdb";
 import RatingsGrid from "../components/RatingsGrid";
 import DeleteAccount from "../components/DeleteAccount";
 
+const API = process.env.NEXT_PUBLIC_API_URL; // 🔥 jednotné API
+
 interface User {
   username: string;
   email: string;
@@ -44,14 +46,14 @@ export default function ProfilePage() {
     const init = async () => {
       try {
         // 1️⃣ načítame údaje používateľa
-        const userRes = await fetch("http://localhost:5000/api/auth/me", {
+        const userRes = await fetch(`${API}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData: User = await userRes.json();
         setUser(userData);
 
         // 2️⃣ načítame hodnotenia používateľa
-        const ratingsRes = await fetch("http://localhost:5000/api/ratings/me", {
+        const ratingsRes = await fetch(`${API}/api/ratings/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data: Rating[] = await ratingsRes.json();
@@ -68,7 +70,7 @@ export default function ProfilePage() {
               const title = r.type === "movie" ? details.title : details.name;
               const poster = details.poster_path ?? null;
 
-              const avgRes = await fetch(`http://localhost:5000/api/ratings/${r.imdb_id}`);
+              const avgRes = await fetch(`${API}/api/ratings/${r.imdb_id}`);
               const allRatings = await avgRes.json();
               const average =
                 allRatings.length > 0
@@ -85,7 +87,7 @@ export default function ProfilePage() {
         setRatings(enriched);
 
         // 4️⃣ načítame hlasovanie pre rank
-        const leaderboardRes = await fetch("http://localhost:5000/api/leaderboard?type=all");
+        const leaderboardRes = await fetch(`${API}/api/leaderboard?type=all`);
         const leaderboardData = await leaderboardRes.json();
 
         // nájdeme používateľa podľa username
@@ -119,13 +121,13 @@ export default function ProfilePage() {
     setRatings((prev) => prev.map((r) => (r.imdb_id === imdb_id ? { ...r, rating: newRating } : r)));
 
     try {
-      await fetch("http://localhost:5000/api/ratings", {
+      await fetch(`${API}/api/ratings`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ imdb_id, type, rating: newRating }),
       });
 
-      const ratingsRes = await fetch(`http://localhost:5000/api/ratings/${imdb_id}`);
+      const ratingsRes = await fetch(`${API}/api/ratings/${imdb_id}`);
       const allRatings = await ratingsRes.json();
       const avg =
         allRatings.length > 0
@@ -142,7 +144,7 @@ export default function ProfilePage() {
     if (!token) return;
 
     try {
-      await fetch(`http://localhost:5000/api/ratings/${imdb_id}`, {
+      await fetch(`${API}/api/ratings/${imdb_id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -155,9 +157,9 @@ export default function ProfilePage() {
 
   const getUrlType = (type: "movie" | "series") => (type === "movie" ? "movie" : "series");
 
-if (loading || !user) {
-  return <p className="text-white text-center mt-10">Loading...</p>;
-}
+  if (loading || !user) {
+    return <p className="text-white text-center mt-10">Loading...</p>;
+  }
 
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">

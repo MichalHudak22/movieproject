@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import DraggableRow from "./DraggableRow";
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 interface SectionRowClientProps {
     title: string;
     items: any[];
@@ -22,9 +24,8 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
         const loadAverageRating = async () => {
             try {
-                const res = await fetch(
-                    `http://localhost:5000/api/ratings/${selectedItem.id}`
-                );
+                const res = await fetch(`${API}/api/ratings/${selectedItem.id}`);
+
                 const allRatings = await res.json();
 
                 const avg =

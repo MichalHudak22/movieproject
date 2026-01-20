@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 export default function VerifyPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function VerifyPage() {
 
     const verifyAccount = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/auth/verify?token=${token}`);
+        const res = await fetch(`${API}/api/auth/verify?token=${token}`);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message);

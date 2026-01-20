@@ -6,6 +6,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { getTVDetails, getTVCredits, getTVVideos, getTVImages } from "@/lib/tmdb";
 import Reviews from "../../components/Reviews";
 
+const API = process.env.NEXT_PUBLIC_API_URL;
+
 interface TVDetailProps {
   params: { id: string };
 }
@@ -40,7 +42,7 @@ export default function TVDetail({ params }: TVDetailProps) {
 
       // fetch all ratings for this TV show
       try {
-        const res = await fetch(`http://localhost:5000/api/ratings/${tvData.id}?type=series`);
+        const res = await fetch(`${API}/api/ratings/${tvData.id}?type=series`);
         const data = await res.json();
 
         if (data.length > 0) {
@@ -53,7 +55,7 @@ export default function TVDetail({ params }: TVDetailProps) {
 
         // fetch current user's rating
         if (token) {
-          const userRes = await fetch("http://localhost:5000/api/ratings/me", {
+          const userRes = await fetch("${API}/api/ratings/me", {
             headers: { Authorization: `Bearer ${token}` },
           });
           const myRatings = await userRes.json();
@@ -75,7 +77,7 @@ export default function TVDetail({ params }: TVDetailProps) {
     setUserRating(value);
 
     try {
-      await fetch("http://localhost:5000/api/ratings", {
+      await fetch("${API}/api/ratings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +87,7 @@ export default function TVDetail({ params }: TVDetailProps) {
       });
 
       // reload all ratings for average
-      const res = await fetch(`http://localhost:5000/api/ratings/${tv.id}?type=series`);
+      const res = await fetch(`${API}/api/ratings/${tv.id}?type=series`);
       const data = await res.json();
       if (data.length > 0) {
         const avg = data.reduce((acc: number, r: any) => acc + r.rating, 0) / data.length;
