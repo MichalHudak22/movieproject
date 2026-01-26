@@ -20,6 +20,9 @@ export default function VerifyPage() {
       return;
     }
 
+      console.log("API URL:", API);
+  console.log("Token:", token);
+
     let didCancel = false;
 
     const verifyAccount = async () => {
