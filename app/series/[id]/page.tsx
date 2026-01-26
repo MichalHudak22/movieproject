@@ -55,7 +55,7 @@ export default function TVDetail({ params }: TVDetailProps) {
 
         // fetch current user's rating
         if (token) {
-          const userRes = await fetch("${API}/api/ratings/me", {
+          const userRes = await fetch(`${API}/api/ratings/me`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const myRatings = await userRes.json();
@@ -77,7 +77,7 @@ export default function TVDetail({ params }: TVDetailProps) {
     setUserRating(value);
 
     try {
-      await fetch("${API}/api/ratings", {
+      await fetch(`${API}/api/ratings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
