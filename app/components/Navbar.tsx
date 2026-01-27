@@ -35,7 +35,8 @@ export default function Navbar() {
       : "text-white hover:text-red-600";
 
   return (
-    <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-[300]">
+    <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center fixed top-0 z-[300]">
+
 
       {/* Logo */}
       <h1 className="text-xl font-black">
