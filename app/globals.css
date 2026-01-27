@@ -20,7 +20,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.80); /* dark overlay */
+  background: rgba(0,0,0,0.75); /* dark overlay */
   z-index: 0;
 }
 
