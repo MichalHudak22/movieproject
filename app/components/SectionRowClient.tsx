@@ -52,7 +52,7 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
     return (
         <div className="mb-12">
-            <h2 className="text-xl md:text-2xl text-gray-200 font-bold mb-4">{title}</h2>
+            <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">{title}</h2>
 
             <DraggableRow>
                 {items.map((item) => (

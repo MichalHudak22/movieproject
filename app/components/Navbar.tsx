@@ -38,7 +38,7 @@ export default function Navbar() {
     <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-[300]">
 
       {/* Logo */}
-      <h1 className="text-xl font-bold">
+      <h1 className="text-xl font-black">
         <Link
           href="/"
           className="animate-gradient-red transition-colors hover:brightness-125 no-underline"
