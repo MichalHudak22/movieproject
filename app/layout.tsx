@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* CONTENT ABOVE OVERLAY */}
           <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />
-            <main className="flex-grow w-full lg:w-[92%] mx-auto">{children}</main>
+            <main className="flex-grow w-full lg:w-[92%] mx-auto pt-[70px]">{children}</main>
             <Footer />
           </div>
         </AuthProvider>
