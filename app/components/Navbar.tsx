@@ -35,8 +35,7 @@ export default function Navbar() {
       : "text-white hover:text-red-600";
 
   return (
-    <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center fixed top-0 z-[300]">
-
+    <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-[300]">
 
       {/* Logo */}
       <h1 className="text-xl font-black">
@@ -118,7 +117,8 @@ export default function Navbar() {
 
         {/* Mobile Profile Dropdown */}
         {dropdownOpen && token && (
-          <ul className="fixed top-20 right-4 w-36 bg-gray-800 border border-gray-600 rounded shadow-lg flex flex-col z-[400]">
+          <ul className="absolute top-12 right-0 w-36 bg-gray-800 border border-gray-600 rounded shadow-lg flex flex-col z-50 h-20">
+            {/* Profile Button */}
             <li className="h-1/2">
               <Link
                 href="/profile"
@@ -128,6 +128,8 @@ export default function Navbar() {
                 Profile
               </Link>
             </li>
+
+            {/* Logout Button */}
             <li className="h-1/2">
               <button
                 onClick={handleLogout}
@@ -140,9 +142,6 @@ export default function Navbar() {
         )}
 
 
-
-
-
         {/* Mobile Burger */}
         <button
           onClick={toggleMenu}
@@ -153,10 +152,10 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Overlay Menu (under navbar) */}
+      {/* Mobile Overlay Menu */}
       {isOpen && (
-        <div className="fixed inset-0 top-[60px] bg-black/85 backdrop-blur-sm z-[40] flex flex-col items-center justify-center lg:hidden">
-          <ul className="flex flex-col gap-8 text-3xl text-white text-center font-bold overflow-y-auto max-h-[calc(100vh-72px)]">
+        <div className="fixed inset-0 top-[55px] bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center lg:hidden">
+          <ul className="flex flex-col gap-8 text-3xl text-white text-center font-bold">
             {["/", "/series", "/person", "/categories", "/informations"].map(
               (path, idx) => {
                 const name = ["Home", "Series", "Actors", "Categories", "Informations"][idx];
@@ -176,8 +175,6 @@ export default function Navbar() {
           </ul>
         </div>
       )}
-
-
     </nav>
   );
 }
