@@ -116,30 +116,31 @@ export default function Navbar() {
         </button>
 
         {/* Mobile Profile Dropdown */}
-        {dropdownOpen && token && (
-          <ul className="absolute top-12 right-0 w-36 bg-gray-800 border border-gray-600 rounded shadow-lg flex flex-col z-50 h-20">
-            {/* Profile Button */}
-            <li className="h-1/2">
-              <Link
-                href="/profile"
-                className="flex items-center justify-center w-full h-full text-white font-semibold hover:bg-gray-700 transition"
-                onClick={() => setDropdownOpen(false)}
-              >
-                Profile
-              </Link>
-            </li>
+{dropdownOpen && token && (
+  <ul className="absolute top-12 right-0 w-36 bg-gray-800 border border-gray-600 rounded shadow-lg flex flex-col z-[400]">
+    {/* Profile Button */}
+    <li className="h-1/2">
+      <Link
+        href="/profile"
+        className="flex items-center justify-center w-full h-full text-white font-semibold hover:bg-gray-700 transition"
+        onClick={() => setDropdownOpen(false)}
+      >
+        Profile
+      </Link>
+    </li>
 
-            {/* Logout Button */}
-            <li className="h-1/2">
-              <button
-                onClick={handleLogout}
-                className="flex items-center justify-center w-full h-full text-red-600 font-semibold hover:bg-gray-700 transition"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        )}
+    {/* Logout Button */}
+    <li className="h-1/2">
+      <button
+        onClick={handleLogout}
+        className="flex items-center justify-center w-full h-full text-red-600 font-semibold hover:bg-gray-700 transition"
+      >
+        Logout
+      </button>
+    </li>
+  </ul>
+)}
+
 
 
         {/* Mobile Burger */}
@@ -154,7 +155,7 @@ export default function Navbar() {
 
       {/* Mobile Overlay Menu */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center lg:hidden">
+        <div className="fixed inset-0 top-[72px] bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center lg:hidden">
           <ul className="flex flex-col gap-8 text-3xl text-white text-center font-bold">
             {["/", "/series", "/person", "/categories", "/informations"].map(
               (path, idx) => {

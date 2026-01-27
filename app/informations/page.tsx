@@ -8,7 +8,7 @@ export default function InformationsPage() {
         <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4">
           About <span className="text-red-700 animate-gradient-red">CinemaSpace</span>
         </h1>
-        <p className="text-md lg:text-2xl max-w-5xl m-auto text-gray-200 animate-gradient-lighted pt-2">
+        <p className="text-left text-md lg:text-2xl max-w-5xl m-auto text-gray-200 animate-gradient-lighted p-2">
           A personal movie and TV discovery platform built to gain real-world experience
           with modern web technologies and external APIs.
         </p>
@@ -19,7 +19,7 @@ export default function InformationsPage() {
 
   {/* Project Overview */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Project Overview
     </h2>
     <p>
@@ -38,7 +38,7 @@ export default function InformationsPage() {
 
   {/* Authentication */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Authentication and User Accounts
     </h2>
     <p>
@@ -54,7 +54,7 @@ export default function InformationsPage() {
 
   {/* Ratings */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Ratings System
     </h2>
 
@@ -91,7 +91,7 @@ export default function InformationsPage() {
 
   {/* Reviews */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Reviews System
     </h2>
     <p>
@@ -110,7 +110,7 @@ export default function InformationsPage() {
 
   {/* Home Page Section */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Home Page Features
     </h2>
     <p>
@@ -124,7 +124,7 @@ export default function InformationsPage() {
 
   {/* Categories */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Categories Page
     </h2>
     <p>
@@ -140,7 +140,7 @@ export default function InformationsPage() {
 
   {/* Series */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Series Page
     </h2>
     <p>
@@ -150,7 +150,7 @@ export default function InformationsPage() {
 
   {/* Actors */}
   <section>
-    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 animate-gradient-red">
+    <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
       Actors and Persons
     </h2>
     <p>
