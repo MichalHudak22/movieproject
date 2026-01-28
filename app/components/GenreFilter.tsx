@@ -89,15 +89,15 @@ export default function GenreFilter() {
 
 
     return (
-        <div className="text-white mb-12">
+        <div className="text-white mb-10">
             {/* GENRE BUTTONS */}
-            <div className="p-2 md:p-6 shadow-lg">
+            <div className="md:p-6 shadow-lg">
                 <div className="flex flex-wrap justify-center gap-2">
                     {allGenres.map((g) => (
                         <button
                             key={g.id}
                             onClick={() => toggleGenre(g.id)}
-                            className={`px-3 py-1 text-xs sm:text-sm rounded-full font-semibold border transition-all
+                            className={`px-2 md:px-3 py-1 text-[10px] sm:text-sm rounded-full font-semibold border transition-all
                 ${selectedGenres.includes(g.id)
                                     ? "bg-red-700 border-red-500 scale-105"
                                     : "bg-gray-900 border-gray-600 hover:bg-red-700"
