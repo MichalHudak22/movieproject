@@ -4,18 +4,18 @@ export default function InformationsPage() {
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-3 lg:mb-10">
         <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4">
-          About <span className="text-red-700 animate-gradient-red">CinemaSpace</span>
+          Project <span className="text-red-700 animate-gradient-red">Details</span>
         </h1>
-        <p className="text-left text-md lg:text-2xl max-w-5xl m-auto text-gray-200 animate-gradient-lighted p-2">
+        <p className="text-left md:text-center text-md md:text-lg lg:text-2xl max-w-5xl mx-auto text-gray-200 animate-gradient-lighted p-2">
           A personal movie and TV discovery platform built to gain real-world experience
           with modern web technologies and external APIs.
         </p>
       </div>
 
  {/* Content */}
-<div className="max-w-7xl mx-auto space-y-10 text-gray-100 tracking-wide bg-black/60 p-2 lg:px-8 lg:py-4 rounded-xl text-base md:text-lg leading-relaxed">
+<div className="max-w-7xl mx-auto space-y-8 text-gray-100 tracking-wide bg-black/60 p-2 lg:px-8 lg:py-4 rounded-xl text-base md:text-lg leading-relaxed">
 
   {/* Project Overview */}
   <section>
