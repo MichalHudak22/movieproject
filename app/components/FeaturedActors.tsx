@@ -47,15 +47,15 @@ export default function FeaturedActors() {
   }, []);
 
   return (
-    <section className="mb-12 w-[75%] mx-auto">
+    <section className="mb-12 w-[95%] md:w-[75%] mx-auto">
       <h2 className="text-2xl font-bold mb-7 text-gray-200">Star Highlights</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-12">
         {actors.map((actor) => (
           <Link
             key={actor.id}
             href={`/person/${actor.id}`}
-            className="bg-gray-900/80 hover:bg-gray-900 border-2 border-gray-700 hover:border-gray-500 rounded-2xl overflow-hidden p-4 flex flex-col items-center hover:scale-105 transition-transform"
+            className="bg-gray-900/50 hover:bg-black/80 border-2 border-red-800/30 hover:border-red-600/30 rounded-2xl overflow-hidden p-4 flex flex-col items-center hover:scale-105 transition-transform"
           >
             <p className="text-lg md:text-2xl text-red-300 pb-5 font-semibold animate-gradient-red">{actor.label}</p>
             {actor.profile_path ? (

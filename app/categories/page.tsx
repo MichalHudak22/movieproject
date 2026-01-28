@@ -112,11 +112,11 @@ export default function CategoriesPage() {
       <GenreFilter />
 
       {topMovies.length > 0 && (
-        <SectionRowClient title="Top Rated Movies by Our Users" items={topMovies} type="movie" />
+        <SectionRowClient title="CinemaSpace Movie Ratings" items={topMovies} type="movie" />
       )}
 
       {topSeries.length > 0 && (
-        <SectionRowClient title="Top Rated Series by Our Users" items={topSeries} type="series" />
+        <SectionRowClient title="CinemaSpace Series Ratings" items={topSeries} type="series" />
       )}
 
       {genreData.map((genre) => (

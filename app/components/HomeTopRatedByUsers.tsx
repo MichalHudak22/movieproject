@@ -71,7 +71,7 @@ export default function HomeTopRatedByUsers() {
     <>
       {topMovies.length > 0 && (
         <SectionRowClient
-          title="Top Rated Movies by Our Users"
+          title="CinemaSpace Movie Ratings"
           items={topMovies}
           type="movie"
         />
@@ -79,7 +79,7 @@ export default function HomeTopRatedByUsers() {
 
       {topSeries.length > 0 && (
         <SectionRowClient
-          title="Top Rated Series by Our Users"
+          title="CinemaSpace Series Ratings"
           items={topSeries}
           type="series"
         />
