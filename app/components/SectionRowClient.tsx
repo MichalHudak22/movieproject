@@ -75,28 +75,43 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
             {/* ================= MODAL ================= */}
             {selectedItem && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 md:p-8 overflow-auto">
-                    <div className="bg-black/85 rounded-lg shadow-xl max-w-4xl w-full md:flex md:gap-6 relative">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 md:p-8 overflow-hidden">
+                    <div
+                        className="
+        bg-black/85 rounded-lg shadow-xl
+        w-full max-w-md sm:max-w-xl md:max-w-4xl
+        max-h-[80vh] md:max-h-none
+        overflow-hidden
+        md:flex md:gap-6
+        relative
+      "
+                    >
                         {/* Close button */}
                         <button
-                            className="absolute top-3 right-3 text-red-600 hover:text-red-500 hover:scale-125 transition text-2xl font-bold"
+                            className="absolute top-3 right-3 z-10 text-red-600 hover:text-red-500 hover:scale-125 transition text-2xl font-bold"
                             onClick={() => setSelectedItem(null)}
                         >
                             &times;
                         </button>
 
                         {/* Poster */}
-                        <div className="md:w-1/3 flex-shrink-0">
+                        <div className="md:w-1/3 flex-shrink-0 max-h-[40vh] md:max-h-none overflow-hidden p-4 md:p-0">
                             <img
                                 src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
                                 alt={selectedItem.title || selectedItem.name}
-                                className="rounded-lg w-full object-cover"
+                                className="rounded-lg w-full h-auto object-cover"
                             />
                         </div>
 
                         {/* Info */}
-                        <div className="md:w-2/3 p-4 flex flex-col gap-2">
-                            <h2 className="text-2xl md:text-3xl font-bold">
+                        <div
+                            className="
+          md:w-2/3 p-4 flex flex-col gap-2
+          overflow-y-auto
+          max-h-[60vh] md:max-h-none
+        "
+                        >
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
                                 {selectedItem.title || selectedItem.name}
                             </h2>
 
@@ -110,8 +125,7 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
                                 </p>
                             )}
 
-
-                            {/* TMDB rating (voliteľné) */}
+                            {/* TMDB rating */}
                             {selectedItem.vote_average !== undefined && (
                                 <p>
                                     <span className="font-semibold text-gray-200">TMDB Rating: </span>
@@ -123,9 +137,7 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
                             {selectedItem.release_date && (
                                 <p>
-                                    <span className="font-semibold text-gray-200">
-                                        Release Date:{" "}
-                                    </span>
+                                    <span className="font-semibold text-gray-200">Release Date: </span>
                                     <span className="text-green-300">
                                         {selectedItem.release_date}
                                     </span>
@@ -134,30 +146,28 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
                             {selectedItem.first_air_date && (
                                 <p>
-                                    <span className="font-semibold text-gray-200">
-                                        First Air Date:{" "}
-                                    </span>
+                                    <span className="font-semibold text-gray-200">First Air Date: </span>
                                     <span className="text-green-300">
                                         {selectedItem.first_air_date}
                                     </span>
                                 </p>
                             )}
 
-                            <p className="text-gray-300 text-sm md:text-base line-clamp-5">
+                            <p className="text-gray-300 text-sm md:text-base line-clamp-6 md:line-clamp-none">
                                 {selectedItem.overview}
                             </p>
 
-                            <div className="mt-4 flex gap-3">
+                            <div className="mt-4 flex flex-wrap gap-3">
                                 <Link
                                     href={`/${type}/${selectedItem.id}`}
-                                    className="inline-block bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
+                                    className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
                                 >
                                     More Info
                                 </Link>
 
                                 <button
                                     onClick={() => setSelectedItem(null)}
-                                    className="inline-block bg-gray-800 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
+                                    className="bg-gray-800 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
                                 >
                                     Close
                                 </button>
@@ -166,6 +176,7 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
