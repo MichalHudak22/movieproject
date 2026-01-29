@@ -127,18 +127,18 @@ export default function MovieDetail({ params }: MovieDetailProps) {
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="rounded w-2/3 mx-auto lg md:w-1/3"
+          className="rounded w-2/3 lg md:w-1/3"
         />
 
         {/* Info */}
-        <div className="md:w-2/3 flex flex-col gap-2">
+        <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-base">
           <h1 className="text-2xl md:text-4xl font-bold text-gray-100">{movie.title}</h1>
 
           {/* Ratings */}
           <div className="flex flex-col gap-1 md:mt-2">
             {/* Users Rating – priemer našich používateľov + počet hodnotiacich */}
             {averageRating !== null && (
-              <p className="mt-4">
+              <p className="mt-2 md:mt-4">
                 <span className="font-semibold text-gray-100">Users Rating:</span>{" "}
                 <span className="text-yellow-400 font-bold">{averageRating.toFixed(1)} / 10 ⭐</span>
                 {ratingsCount > 0 && (
