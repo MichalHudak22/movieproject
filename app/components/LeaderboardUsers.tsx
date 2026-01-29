@@ -47,40 +47,60 @@ export default function LeaderboardUsers() {
     }, []);
 
     const renderTable = (title: string, data: LeaderboardUser[]) => (
-        <div className="mb-8 lg:mb-0 lg:flex-1 bg-black/70 lg:border border-gray-700 rounded-lg shadow-md overflow-hidden min-w-[400px] max-w-[650px] mx-auto">
-            <h2 className="text-lg md:text-xl text-center font-bold px-4 py-3 bg-gray-800 animate-gradient-red border-b border-gray-700">
-                {title}
-            </h2>
-            <div className="overflow-x-auto">
-                <table className="min-w-full text-left">
-                    <thead>
-                        <tr className="bg-gray-900/70 text-red-700 text-center">
-                            <th className="px-3 py-2 border-r border-gray-700">#</th>
-                            <th className="px-3 py-2 border-r border-gray-700">Username</th>
-                            <th className="px-3 py-2 border-r border-gray-700">Votes</th>
-                            <th className="px-3 py-2">Rank</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((user, idx) => (
-                            <tr key={user.id} className={idx % 2 === 0 ? "bg-black/70" : "bg-gray-900/70"}>
-                                <td className="px-3 py-2 border-r border-gray-700 text-yellow-400 text-center">{idx + 1}</td>
-                                <td className="px-3 py-2 border-r border-gray-700 font-semibold tracking-wide text-center">{user.username}</td>
-                                <td className="px-3 py-2 border-r border-gray-700 text-center">{user.votes_count}</td>
-                                <td className="px-3 py-2 text-yellow-400 text-center">{user.rank}</td>
-                            </tr>
-                        ))}
-                        {data.length === 0 && (
-                            <tr>
-                                <td colSpan={4} className="px-3 py-2 text-center text-red-500">
-                                    No data available
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+       <div className="mb-8 lg:mb-0 lg:flex-1 bg-black/70 lg:border border-gray-700 rounded-lg shadow-md overflow-hidden w-full max-w-[650px] mx-auto">
+    <h2 className="text-sm sm:text-lg md:text-xl text-center font-bold px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 animate-gradient-red border-b border-gray-700">
+        {title}
+    </h2>
+
+    <div className="overflow-x-auto">
+        <table className="w-full text-left text-xs sm:text-sm">
+            <thead>
+                <tr className="bg-gray-900/70 text-red-700 text-center">
+                    <th className="px-2 sm:px-3 py-2 border-r border-gray-700">#</th>
+                    <th className="px-2 sm:px-3 py-2 border-r border-gray-700">User</th>
+                    <th className="px-2 sm:px-3 py-2 border-r border-gray-700">Votes</th>
+                    <th className="px-2 sm:px-3 py-2 hidden sm:table-cell">
+                        Rank
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {data.map((user, idx) => (
+                    <tr
+                        key={user.id}
+                        className={idx % 2 === 0 ? "bg-black/70" : "bg-gray-900/70"}
+                    >
+                        <td className="px-2 sm:px-3 py-2 border-r border-gray-700 text-yellow-400 text-center">
+                            {idx + 1}
+                        </td>
+
+                        <td className="px-2 sm:px-3 py-2 border-r border-gray-700 font-semibold tracking-wide text-center truncate max-w-[120px] sm:max-w-none">
+                            {user.username}
+                        </td>
+
+                        <td className="px-2 sm:px-3 py-2 border-r border-gray-700 text-center">
+                            {user.votes_count}
+                        </td>
+
+                        <td className="px-2 sm:px-3 py-2 hidden sm:table-cell text-yellow-400 text-center">
+                            {user.rank}
+                        </td>
+                    </tr>
+                ))}
+
+                {data.length === 0 && (
+                    <tr>
+                        <td colSpan={4} className="px-3 py-4 text-center text-red-500">
+                            No data available
+                        </td>
+                    </tr>
+                )}
+            </tbody>
+        </table>
+    </div>
+</div>
+
     );
 
     return (
