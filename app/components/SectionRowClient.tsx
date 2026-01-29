@@ -74,108 +74,102 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
             </DraggableRow>
 
             {/* ================= MODAL ================= */}
-            {selectedItem && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 md:p-8 overflow-hidden">
-                    <div
-                        className="
+         {selectedItem && (
+  <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3 sm:p-4">
+    <div
+      className="
         bg-black/85 rounded-lg shadow-xl
         w-full max-w-md sm:max-w-xl md:max-w-4xl
-        max-h-[80vh] md:max-h-none
+        max-h-[90vh] md:max-h-none
         overflow-hidden
-        md:flex md:gap-6
+        flex flex-col md:flex-row
         relative
       "
-                    >
-                        {/* Close button */}
-                        <button
-                            className="absolute top-3 right-3 z-10 text-red-600 hover:text-red-500 hover:scale-125 transition text-2xl font-bold"
-                            onClick={() => setSelectedItem(null)}
-                        >
-                            &times;
-                        </button>
+    >
+      {/* Close button */}
+      <button
+        onClick={() => setSelectedItem(null)}
+        className="absolute top-3 right-3 z-20 text-red-600 text-2xl font-bold hover:scale-125 transition"
+      >
+        &times;
+      </button>
 
-                        {/* Poster */}
-                        <div className="md:w-1/3 flex-shrink-0 max-h-[40vh] md:max-h-none overflow-hidden p-4 md:p-0">
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
-                                alt={selectedItem.title || selectedItem.name}
-                                className="rounded-lg w-full h-auto object-cover"
-                            />
-                        </div>
+      {/* Content wrapper – ONE scroll area on mobile */}
+      <div className="flex flex-col md:flex-row overflow-y-auto md:overflow-visible">
 
-                        {/* Info */}
-                        <div
-                            className="
-          md:w-2/3 p-4 flex flex-col gap-2
-          overflow-y-auto
-          max-h-[60vh] md:max-h-none
-        "
-                        >
-                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
-                                {selectedItem.title || selectedItem.name}
-                            </h2>
+        {/* Poster */}
+        <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
+            alt={selectedItem.title || selectedItem.name}
+            className="rounded-lg w-full object-cover max-h-[35vh] md:max-h-none mx-auto"
+          />
+        </div>
 
-                            {/* ⭐ USER AVERAGE RATING */}
-                            {averageRating !== null && (
-                                <p>
-                                    <span className="font-semibold text-gray-200">Users Rating: </span>
-                                    <span className="text-yellow-400 font-bold">
-                                        {averageRating.toFixed(1)} / 10 ⭐
-                                    </span>
-                                </p>
-                            )}
+        {/* Info */}
+        <div className="md:w-2/3 p-3 md:p-4 flex flex-col gap-2">
+          <h2 className="text-lg sm:text-xl md:text-3xl font-bold">
+            {selectedItem.title || selectedItem.name}
+          </h2>
 
-                            {/* TMDB rating */}
-                            {selectedItem.vote_average !== undefined && (
-                                <p>
-                                    <span className="font-semibold text-gray-200">TMDB Rating: </span>
-                                    <span className="text-yellow-400 font-semibold">
-                                        {Number(selectedItem.vote_average).toFixed(1)} / 10 ⭐
-                                    </span>
-                                </p>
-                            )}
+          {averageRating !== null && (
+            <p>
+              <span className="font-semibold text-gray-200">Users Rating: </span>
+              <span className="text-yellow-400 font-bold">
+                {averageRating.toFixed(1)} / 10 ⭐
+              </span>
+            </p>
+          )}
 
-                            {selectedItem.release_date && (
-                                <p>
-                                    <span className="font-semibold text-gray-200">Release Date: </span>
-                                    <span className="text-green-300">
-                                        {selectedItem.release_date}
-                                    </span>
-                                </p>
-                            )}
+          {selectedItem.vote_average !== undefined && (
+            <p>
+              <span className="font-semibold text-gray-200">TMDB Rating: </span>
+              <span className="text-yellow-400 font-semibold">
+                {Number(selectedItem.vote_average).toFixed(1)} / 10 ⭐
+              </span>
+            </p>
+          )}
 
-                            {selectedItem.first_air_date && (
-                                <p>
-                                    <span className="font-semibold text-gray-200">First Air Date: </span>
-                                    <span className="text-green-300">
-                                        {selectedItem.first_air_date}
-                                    </span>
-                                </p>
-                            )}
+          {selectedItem.release_date && (
+            <p>
+              <span className="font-semibold text-gray-200">Release Date: </span>
+              <span className="text-green-300">{selectedItem.release_date}</span>
+            </p>
+          )}
 
-                            <p className="text-gray-300 text-sm md:text-base line-clamp-6 md:line-clamp-none">
-                                {selectedItem.overview}
-                            </p>
+          {selectedItem.first_air_date && (
+            <p>
+              <span className="font-semibold text-gray-200">First Air Date: </span>
+              <span className="text-green-300">{selectedItem.first_air_date}</span>
+            </p>
+          )}
 
-                            <div className="mt-4 flex flex-wrap gap-3">
-                                <Link
-                                    href={`/${type}/${selectedItem.id}`}
-                                    className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
-                                >
-                                    More Info
-                                </Link>
+          <p className="text-gray-300 text-sm md:text-base line-clamp-5 md:line-clamp-none">
+            {selectedItem.overview}
+          </p>
 
-                                <button
-                                    onClick={() => setSelectedItem(null)}
-                                    className="bg-gray-800 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md hover:shadow-lg"
-                                >
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+          {/* Actions – ALWAYS visible */}
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href={`/${type}/${selectedItem.id}`}
+              className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md"
+            >
+              More Info
+            </Link>
+
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="bg-gray-800 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition shadow-md"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
         </div>
     );
