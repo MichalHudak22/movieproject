@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { getPersonDetails, getPersonCredits } from "@/lib/tmdb";
 import Link from "next/link";
 import DraggableRow from "@/app/components/DraggableRow";
@@ -8,40 +9,57 @@ interface PersonDetailProps {
   params: { id: string };
 }
 
-export default async function PersonDetail({ params }: PersonDetailProps) {
+export default function PersonDetail({ params }: PersonDetailProps) {
   const id = Number(params.id);
 
-  const [person, credits] = await Promise.all([
-    getPersonDetails(id),
-    getPersonCredits(id),
-  ]);
+  const [person, setPerson] = useState<any | null>(null);
+  const [credits, setCredits] = useState<any[]>([]);
+  const [popularity, setPopularity] = useState<number | null>(null);
 
-  // Spojíme cast + crew a zoradíme podľa popularity
-  const allCredits = [...credits.cast, ...credits.crew]
-    .filter((c: any) => c.poster_path || c.profile_path)
-    .sort((a: any, b: any) => (b.popularity || 0) - (a.popularity || 0));
+  useEffect(() => {
+    const fetchData = async () => {
+      const [personData, creditsData] = await Promise.all([
+        getPersonDetails(id),
+        getPersonCredits(id),
+      ]);
+
+      setPerson(personData);
+
+      // Spojíme cast + crew, filtrujeme a zoradíme podľa popularity
+      const allCredits = [...creditsData.cast, ...creditsData.crew]
+        .filter((c: any) => c.poster_path || c.profile_path)
+        .sort((a: any, b: any) => (b.popularity || 0) - (a.popularity || 0));
+
+      setCredits(allCredits);
+
+      // popularity len na client side, aby sme predišli hydration warning
+      setPopularity(personData.popularity || null);
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (!person) return <p className="text-white">Loading...</p>;
 
   // Rozdelenie podľa media_type
-  const movies = allCredits.filter((c: any) => c.media_type === "movie");
-  const tvShows = allCredits.filter((c: any) => c.media_type === "tv");
-  const others = allCredits.filter(
+  const movies = credits.filter((c: any) => c.media_type === "movie");
+  const tvShows = credits.filter((c: any) => c.media_type === "tv");
+  const others = credits.filter(
     (c: any) => c.media_type !== "movie" && c.media_type !== "tv"
   );
 
   return (
     <div className="min-h-screen text-white px-4 md:px-6 py-6 lg:py-8">
       {/* Hlavný blok: profil + info */}
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 mb-10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mb-10">
         <img
           src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
           alt={person.name}
-          className="rounded-lg w-2/3 md:w-1/3 object-cover flex-none"
+          className="rounded-lg w-full md:w-1/3 md:h-[500px] object-cover flex-none"
         />
 
-        <div className="md:w-2/3 flex flex-col gap-2 md:gap-4">
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-100">
-            {person.name}
-          </h1>
+        <div className="md:w-2/3 flex flex-col gap-2 md:gap-4 text-xs md:text-sm lg:text-base">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-100">{person.name}</h1>
 
           <p>
             <span className="font-semibold text-gray-100">Birthday:</span>{" "}
@@ -56,11 +74,11 @@ export default async function PersonDetail({ params }: PersonDetailProps) {
           <p>
             <span className="font-semibold text-gray-100">Popularity:</span>{" "}
             <span className="text-yellow-400 font-bold">
-              {person.popularity?.toFixed(1) || "N/A"}
+              {popularity !== null ? popularity.toFixed(1) : "N/A"}
             </span>
           </p>
 
-          <p className="text-gray-100 text-xs md:text-base lg:text-lg leading-relaxed tracking-wide mt-2 md:mt-4">
+          <p className="text-gray-100 text-xs lg:text-base leading-relaxed tracking-wide mt-2 md:mt-4">
             {person.biography || "No biography available."}
           </p>
         </div>
@@ -80,14 +98,12 @@ export default async function PersonDetail({ params }: PersonDetailProps) {
 function SectionCarousel({ title, credits }: { title: string; credits: any[] }) {
   return (
     <div className="mb-12 max-w-6xl mx-auto">
-      <h2 className="text-2xl md:text-3xl font-semibold text-gray-200 mb-4">
-        {title}
-      </h2>
+      <h2 className="text-2xl md:text-3xl font-semibold text-gray-200 mb-4">{title}</h2>
       <div className="overflow-x-auto no-scrollbar pb-4">
         <DraggableRow>
-          {credits.map((item: any) => (
+          {credits.map((item: any, idx: number) => (
             <Link
-              key={`${item.media_type}-${item.id}`}
+              key={`${item.media_type}-${item.id}-${idx}`} // pridali sme index pre 100% unikátnosť
               href={`/${item.media_type === "tv" ? "series" : item.media_type}/${item.id}`}
               className="min-w-[150px] md:min-w-[180px] bg-gray-800/70 rounded-lg p-2 hover:scale-105 transition-transform flex-shrink-0"
             >
