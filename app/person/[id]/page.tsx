@@ -55,7 +55,7 @@ export default function PersonDetail({ params }: PersonDetailProps) {
         <img
           src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
           alt={person.name}
-          className="rounded-lg w-full md:w-1/3 md:h-[500px] object-cover flex-none"
+          className="rounded-lg w-full md:w-1/3 h-[400px] object-cover flex-none"
         />
 
         <div className="md:w-2/3 flex flex-col gap-2 md:gap-4 text-xs md:text-sm lg:text-base">
