@@ -11,18 +11,22 @@ export default function TVPage() {
   const [topRated, setTopRated] = useState<any[]>([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const trendingData = await getTrendingTV();
-      const popularData = await getPopularTV();
-      const topRatedData = await getTopRatedTV();
+  async function fetchData() {
+    const trendingData = await getTrendingTV();
+    const popularData = await getPopularTV();
+    const topRatedData = await getTopRatedTV();
 
-      setTrending(trendingData.results);
-      setPopular(popularData.results);
-      setTopRated(topRatedData.results);
-    }
+    const dedupe = (arr: any[]) =>
+      Array.from(new Map(arr.map(item => [item.id, item])).values());
 
-    fetchData();
-  }, []);
+    setTrending(dedupe(trendingData.results));
+    setPopular(dedupe(popularData.results));
+    setTopRated(dedupe(topRatedData.results));
+  }
+
+  fetchData();
+}, []);
+
 
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">

@@ -131,7 +131,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
         />
 
         {/* Info */}
-        <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-base">
+         <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-sm lg:text-base">
           <h1 className="text-2xl md:text-4xl font-bold text-gray-100">{movie.title}</h1>
 
           {/* Ratings */}
@@ -200,7 +200,8 @@ export default function MovieDetail({ params }: MovieDetailProps) {
 
 
           {/* Overview */}
-          <p className="text-gray-100 md:text-lg leading-relaxed tracking-wide mt-4">{movie.overview}</p>
+          <p className="text-gray-100 md:text-base lg:text-lg leading-relaxed tracking-wide mt-4">
+            {movie.overview} </p>
 
           {/* User Rating */}
           {token && (
