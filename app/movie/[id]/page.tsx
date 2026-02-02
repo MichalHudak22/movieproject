@@ -1,16 +1,11 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import {
-  getMovieDetails,
-  getMovieCredits,
-  getMovieVideos,
-  getMovieImages,
-} from "@/lib/tmdb";
-
-import Reviews from "../../components/Reviews";
+import Link from 'next/link';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import { getMovieDetails, getMovieCredits, getMovieVideos, getMovieImages } from '@/lib/tmdb';
+import Reviews from '../../components/Reviews';
+import Image from 'next/image';
 
 interface MovieDetailProps {
   params: { id: string };
@@ -50,8 +45,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
         const res = await fetch(`${API}/api/ratings/${movieData.id}`);
         const data = await res.json();
 
-
-        console.log("ratings data:", data); // <-- pridaj toto
+        console.log('ratings data:', data); // <-- pridaj toto
 
         if (data.length > 0) {
           const avg = data.reduce((acc: number, r: any) => acc + r.rating, 0) / data.length;
@@ -60,9 +54,6 @@ export default function MovieDetail({ params }: MovieDetailProps) {
         } else {
           setRatingsCount(0); // ak ešte nikto nehodnotil
         }
-
-
-
 
         // fetch current user's rating
         if (token) {
@@ -87,12 +78,12 @@ export default function MovieDetail({ params }: MovieDetailProps) {
 
     try {
       await fetch(`${API}/api/ratings`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ imdb_id: movie.id.toString(), type: "movie", rating: value }),
+        body: JSON.stringify({ imdb_id: movie.id.toString(), type: 'movie', rating: value }),
       });
 
       // reload average rating
@@ -110,13 +101,12 @@ export default function MovieDetail({ params }: MovieDetailProps) {
     }
   };
 
-
   if (!movie || !credits || !videos || !images) return <p className="text-white">Loading...</p>;
 
-  const director = credits.crew.find((c: any) => c.job === "Director");
-  const composer = credits.crew.find((c: any) => c.job === "Original Music Composer");
+  const director = credits.crew.find((c: any) => c.job === 'Director');
+  const composer = credits.crew.find((c: any) => c.job === 'Original Music Composer');
   const mainCast = credits.cast.slice(0, 10);
-  const trailer = videos.results.find((v: any) => v.type === "Trailer" && v.site === "YouTube");
+  const trailer = videos.results.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
   const screenshots = images.backdrops.slice(0, 10);
 
   return (
@@ -124,36 +114,38 @@ export default function MovieDetail({ params }: MovieDetailProps) {
       {/* Hlavný blok */}
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 mb-8">
         {/* Poster */}
-        <img
+        <Image
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
+          width={500} // odhadnutá šírka podľa TMDB
+          height={750} // odhadnutá výška podľa TMDB (proporcie posteru)
           className="rounded w-2/3 lg md:w-1/3"
+          priority={true} // načíta sa hneď pri load
         />
 
         {/* Info */}
-         <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-sm lg:text-base">
+        <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-sm lg:text-base">
           <h1 className="text-2xl md:text-4xl font-bold text-gray-100">{movie.title}</h1>
 
           {/* Ratings */}
           <div className="flex flex-col gap-1 md:mt-2">
-            {/* Users Rating – priemer našich používateľov + počet hodnotiacich */}
             {averageRating !== null && (
               <p className="mt-2 md:mt-4">
-                <span className="font-semibold text-gray-100">Users Rating:</span>{" "}
-                <span className="text-yellow-400 font-bold">{averageRating.toFixed(1)} / 10 ⭐</span>
+                <span className="font-semibold text-gray-100">Users Rating:</span>{' '}
+                <span className="text-yellow-400 font-bold">
+                  {averageRating.toFixed(1)} / 10 ⭐
+                </span>
                 {ratingsCount > 0 && (
                   <span className="text-gray-200 ml-2 font-normal">
-                    ({ratingsCount} {ratingsCount === 1 ? "user" : "users"} rated)
+                    ({ratingsCount} {ratingsCount === 1 ? 'user' : 'users'} rated)
                   </span>
                 )}
               </p>
             )}
 
-
-            {/* TMDB Rating */}
             {movie.vote_average !== undefined && (
               <p>
-                <span className="font-semibold text-gray-100">TMDB Rating:</span>{" "}
+                <span className="font-semibold text-gray-100">TMDB Rating:</span>{' '}
                 <span className="text-yellow-400 font-bold">
                   {Number(movie.vote_average).toFixed(1)} / 10 ⭐
                   <span className="text-gray-200 ml-2 font-normal">
@@ -162,22 +154,23 @@ export default function MovieDetail({ params }: MovieDetailProps) {
                 </span>
               </p>
             )}
-
           </div>
 
           <p>
-            <span className="font-semibold text-gray-100">Release Date:</span>{" "}
+            <span className="font-semibold text-gray-100">Release Date:</span>{' '}
             <span className="text-green-300">{movie.release_date}</span>
           </p>
 
           <p>
-            <span className="font-semibold text-gray-100">Genres:</span>{" "}
-            <span className="text-green-300">{movie.genres.map((g: any) => g.name).join(", ")}</span>
+            <span className="font-semibold text-gray-100">Genres:</span>{' '}
+            <span className="text-green-300">
+              {movie.genres.map((g: any) => g.name).join(', ')}
+            </span>
           </p>
 
           {director && (
             <p>
-              <span className="font-semibold text-gray-100">Director:</span>{" "}
+              <span className="font-semibold text-gray-100">Director:</span>{' '}
               <Link href={`/person/${director.id}`} className="text-red-300 hover:underline">
                 {director.name}
               </Link>
@@ -186,22 +179,22 @@ export default function MovieDetail({ params }: MovieDetailProps) {
 
           {mainCast.length > 0 && (
             <p>
-              <span className="font-semibold text-gray-100">Cast:</span>{" "}
+              <span className="font-semibold text-gray-100">Cast:</span>{' '}
               {mainCast.map((actor: any, idx: number) => (
                 <span key={actor.id}>
                   <Link href={`/person/${actor.id}`} className="text-red-300 hover:underline">
                     {actor.name}
                   </Link>
-                  {idx < mainCast.length - 1 ? ", " : ""}
+                  {idx < mainCast.length - 1 ? ', ' : ''}
                 </span>
               ))}
             </p>
           )}
 
-
           {/* Overview */}
           <p className="text-gray-100 md:text-base lg:text-lg leading-relaxed tracking-wide mt-4">
-            {movie.overview} </p>
+            {movie.overview}{' '}
+          </p>
 
           {/* User Rating */}
           {token && (
@@ -209,15 +202,17 @@ export default function MovieDetail({ params }: MovieDetailProps) {
               <h2 className="text-2xl font-semibold text-gray-200 mb-2">Your Rating</h2>
               <p className="pb-2 text-yellow-400 font-semibold">Set or change your rating here.</p>
               <div className="flex items-center gap-3">
-                <label htmlFor="rating" className="font-semibold">Rate this movie:</label>
+                <label htmlFor="rating" className="font-semibold">
+                  Rate this movie:
+                </label>
                 <input
                   id="rating"
                   type="text"
-                  value={userRating ?? ""}
+                  value={userRating ?? ''}
                   placeholder="0-10"
-                  onChange={(e) => {
+                  onChange={e => {
                     const val = e.target.value;
-                    if (val === "") return setUserRating(null);
+                    if (val === '') return setUserRating(null);
 
                     const match = val.match(/^(10(\.0?)?|[0-9](\.[0-9])?)$/);
                     if (match) {
@@ -238,7 +233,10 @@ export default function MovieDetail({ params }: MovieDetailProps) {
       {trailer && (
         <div className="mt-10 max-w-3xl mx-auto">
           <h2 className="text-2xl font-semibold text-gray-200 mb-3">Trailer</h2>
-          <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
+          <div
+            className="relative w-full rounded-lg overflow-hidden"
+            style={{ paddingTop: '56.25%' }}
+          >
             <iframe
               src={`https://www.youtube.com/embed/${trailer.key}`}
               title="Trailer"
@@ -256,13 +254,19 @@ export default function MovieDetail({ params }: MovieDetailProps) {
           <h2 className="text-2xl font-semibold text-gray-200 mb-4">Screenshots</h2>
           <div className="flex overflow-x-auto gap-4 pb-4">
             {screenshots.map((img: any, idx: number) => (
-              <img
+              <div
                 key={idx}
-                src={`https://image.tmdb.org/t/p/w500${img.file_path}`}
-                alt={`Screenshot ${idx + 1}`}
-                className="rounded-lg w-64 h-36 object-cover flex-shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                className="flex-shrink-0 cursor-pointer hover:scale-105 transition-transform rounded-lg w-64 h-36 overflow-hidden"
                 onClick={() => setActiveScreenshot(idx)}
-              />
+              >
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${img.file_path}`}
+                  alt={`Screenshot ${idx + 1}`}
+                  width={256} // približná šírka podľa Tailwind triedy w-64
+                  height={144} // približná výška podľa Tailwind triedy h-36
+                  className="rounded-lg object-cover w-full h-full"
+                />
+              </div>
             ))}
           </div>
 
@@ -275,7 +279,7 @@ export default function MovieDetail({ params }: MovieDetailProps) {
               {/* X button */}
               <button
                 className="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 z-50"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation(); // aby kliknutie na X nezavrelo modal dvakrát
                   setActiveScreenshot(null);
                 }}
@@ -283,22 +287,24 @@ export default function MovieDetail({ params }: MovieDetailProps) {
                 &times;
               </button>
 
-              <img
-                src={`https://image.tmdb.org/t/p/original${screenshots[activeScreenshot].file_path}`}
-                alt={`Screenshot ${activeScreenshot + 1}`}
-                className="max-h-[80vh] max-w-[80vw] rounded-lg shadow-lg object-contain z-40"
-                onClick={(e) => e.stopPropagation()} // kliknutie na obrázok nezatvára modal
-              />
+              <div
+                className="relative max-h-[80vh] max-w-[80vw] rounded-lg shadow-lg"
+                onClick={e => e.stopPropagation()} // kliknutie na obrázok nezatvára modal
+              >
+                <Image
+                  src={`https://image.tmdb.org/t/p/original${screenshots[activeScreenshot].file_path}`}
+                  alt={`Screenshot ${activeScreenshot + 1}`}
+                  width={1280} // približná šírka pre fullscreen modal
+                  height={720} // približná výška pre fullscreen modal
+                  className="rounded-lg object-contain"
+                />
+              </div>
             </div>
           )}
-
-
         </div>
       )}
 
       <Reviews movieId={movie.id} token={token} />
-
-
     </div>
   );
 }

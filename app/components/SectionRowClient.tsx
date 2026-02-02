@@ -1,15 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import DraggableRow from "./DraggableRow";
+import { useState } from 'react';
+import Link from 'next/link';
+import DraggableRow from './DraggableRow';
+import Image from 'next/image';
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 interface SectionRowClientProps {
   title: string;
   items: any[];
-  type: "movie" | "series";
+  type: 'movie' | 'series';
 }
 
 export default function SectionRowClient({ title, items, type }: SectionRowClientProps) {
@@ -17,7 +18,6 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [loadingModal, setLoadingModal] = useState(false);
 
-  // Otvor modal **až po fetch**, aby všetko bolo pripravené
   const handleOpenModal = async (item: any) => {
     setLoadingModal(true);
     setAverageRating(null);
@@ -27,18 +27,19 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
       const data = await res.json();
       const avg =
         data.length > 0
-          ? Number((data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1))
+          ? Number(
+              (data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1),
+            )
           : null;
       setAverageRating(avg);
     } catch (err) {
-      console.error("Failed to load rating", err);
+      console.error('Failed to load rating', err);
       setAverageRating(null);
     } finally {
-      // minimalny delay, aby modal neblikol pri extrémne rychlom fetchi
       setTimeout(() => {
-        setSelectedItem(item); // otvor modal až keď máme rating
+        setSelectedItem(item);
         setLoadingModal(false);
-      }, 300); // 0.3s delay, môžeš zvýšiť na 500ms ak treba
+      }, 300);
     }
   };
 
@@ -48,15 +49,22 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
       <DraggableRow>
         {items.map((item, index) => (
           <div
-            key={`${type}-${item.id}-${index}`} // unikátny key
+            key={`${type}-${item.id}-${index}`}
             className="min-w-[150px] md:min-w-[180px] bg-gray-800/60 rounded-lg p-2 hover:scale-105 transition-transform cursor-pointer"
             onClick={() => handleOpenModal(item)}
           >
-            <img
-              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-              alt={item.title || item.name}
-              className="rounded-lg mb-2 w-full h-48 md:h-56 object-cover"
-            />
+            {/* Používame item, nie selectedItem */}
+            {item.poster_path && (
+              <div className="relative w-full h-48 md:h-56">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                  alt={item.title || item.name || 'Poster'}
+                  width={300}
+                  height={450}
+                  className="rounded-lg object-cover w-full h-48 md:h-56"
+                />
+              </div>
+            )}
             <h3 className="text-sm md:text-base font-semibold text-gray-100">
               {item.title || item.name}
             </h3>
@@ -76,20 +84,27 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
             </button>
 
             <div className="flex flex-col md:flex-row overflow-y-auto md:overflow-visible">
-              <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
-                  alt={selectedItem.title || selectedItem.name}
-                  className="rounded-lg w-full object-cover max-h-[35vh] md:max-h-none mx-auto"
-                />
-              </div>
+              {/* Poster */}
+              {selectedItem.poster_path && (
+                <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4">
+                  <div className="relative w-full h-[35vh] md:h-auto max-h-[35vh] md:max-h-none mx-auto">
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
+                      alt={selectedItem.title || selectedItem.name}
+                      width={400}
+                      height={600}
+                      className="rounded-lg object-cover w-full max-h-[35vh] md:max-h-none mx-auto"
+                    />
+                  </div>
+                </div>
+              )}
 
+              {/* Info */}
               <div className="md:w-2/3 p-3 md:p-4 flex flex-col gap-2">
                 <h2 className="text-lg sm:text-xl md:text-3xl font-bold">
                   {selectedItem.title || selectedItem.name}
                 </h2>
 
-                {/* Users Rating je už načítaný */}
                 {averageRating !== null && (
                   <p>
                     <span className="font-semibold text-gray-200">Users Rating: </span>
@@ -146,7 +161,6 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
         </div>
       )}
 
-      {/* Malý loading overlay ak treba */}
       {loadingModal && (
         <div className="fixed inset-0 z-40 bg-black/50 flex items-center justify-center text-white font-bold text-xl">
           Loading...

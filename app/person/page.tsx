@@ -1,12 +1,9 @@
-import Link from "next/link";
-import DraggableRow from "@/app/components/DraggableRow";
-import SearchBar from "@/app/components/SearchBar";
-import FeaturedActors from "@/app/components/FeaturedActors";
-import {
-  getPopularPeople,
-  getTrendingPeople,
-  getRisingPeople,
-} from "@/lib/tmdb";
+import Link from 'next/link';
+import DraggableRow from '@/app/components/DraggableRow';
+import SearchBar from '@/app/components/SearchBar';
+import FeaturedActors from '@/app/components/FeaturedActors';
+import { getPopularPeople, getTrendingPeople, getRisingPeople } from '@/lib/tmdb';
+import Image from 'next/image';
 
 export default async function ActorsPage() {
   // Popular Actors
@@ -17,10 +14,8 @@ export default async function ActorsPage() {
   const trendingData = await getTrendingPeople();
   const trending = trendingData.results.filter((p: any) => p.profile_path);
 
-
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
-
       {/* HEADER - identický ako v Home */}
       <div className="text-center mb-5">
         <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold md:my-4">
@@ -34,7 +29,6 @@ export default async function ActorsPage() {
       {/* SearchBar - presne ako Home */}
       <div className="mb-12">
         <SearchBar searchType="person" />
-
       </div>
 
       {/* Featured Actors */}
@@ -43,21 +37,13 @@ export default async function ActorsPage() {
       {/* Carousely */}
       <SectionCarousel title="Popular Actors" actors={popular} />
       <SectionCarousel title="Trending Actors" actors={trending} />
-
     </div>
   );
 }
 
-function SectionCarousel({
-  title,
-  actors,
-}: {
-  title: string;
-  actors: any[];
-}) {
+function SectionCarousel({ title, actors }: { title: string; actors: any[] }) {
   return (
     <div className="mb-12">
-
       <h2 className="text-2xl font-bold mb-4 text-gray-200">{title}</h2>
 
       <div className="overflow-x-auto no-scrollbar pb-4 min-w-full">
@@ -68,11 +54,15 @@ function SectionCarousel({
               href={`/person/${person.id}`}
               className="min-w-[150px] bg-gray-800/60 rounded-lg p-2 hover:scale-105 transition-transform"
             >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
-                alt={person.name}
-                className="rounded-lg mb-2 object-cover w-full h-48"
-              />
+              <div className="relative w-full h-48 mb-2 rounded-lg overflow-hidden">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+                  alt={person.name}
+                  width={150}
+                  height={150}
+                  className="object-cover w-full h-full"
+                />
+              </div>
               <h3 className="text-sm font-semibold">{person.name}</h3>
             </Link>
           ))}

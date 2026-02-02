@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Rating {
   imdb_id: string;
-  type: "movie" | "series";
+  type: 'movie' | 'series';
   rating: number;
   title?: string;
   poster?: string;
@@ -14,9 +15,9 @@ interface Rating {
 interface RatingCardProps {
   rating: Rating;
   token: string | null;
-  onRatingChange: (imdb_id: string, type: "movie" | "series", newRating: number) => void;
+  onRatingChange: (imdb_id: string, type: 'movie' | 'series', newRating: number) => void;
   onDeleteClick: (imdb_id: string) => void;
-  getUrlType: (type: "movie" | "series") => string;
+  getUrlType: (type: 'movie' | 'series') => string;
 }
 
 export default function RatingCard({
@@ -38,7 +39,7 @@ export default function RatingCard({
     >
       {/* Priemerné hodnotenie */}
       <div className="absolute top-2 left-2 bg-yellow-400 text-black font-bold px-2 py-1 rounded-md text-base shadow-md">
-        {rating.averageRating ?? "-"} ⭐
+        {rating.averageRating ?? '-'} ⭐
       </div>
 
       {/* Hover X */}
@@ -51,11 +52,13 @@ export default function RatingCard({
 
       {/* Poster */}
       {rating.poster && (
-        <Link href={`/${getUrlType(rating.type)}/${rating.imdb_id}`}>
-          <img
+        <Link href={`/${getUrlType(rating.type)}/${rating.imdb_id}`} className="block w-full">
+          <Image
             src={`https://image.tmdb.org/t/p/w300${rating.poster}`}
-            alt={rating.title}
-            className="w-full h-64 object-cover"
+            alt="poster"
+            width={300}
+            height={384}
+            className="object-cover w-full h-64 rounded-lg"
           />
         </Link>
       )}
@@ -77,12 +80,10 @@ export default function RatingCard({
         {token && (
           <select
             value={rating.rating}
-            onChange={(e) =>
-              onRatingChange(rating.imdb_id, rating.type, Number(e.target.value))
-            }
+            onChange={e => onRatingChange(rating.imdb_id, rating.type, Number(e.target.value))}
             className="mt-2 w-full bg-gray-800 text-white p-1 rounded-md"
           >
-            {Array.from({ length: 11 }, (_, i) => i).map((n) => (
+            {Array.from({ length: 11 }, (_, i) => i).map(n => (
               <option key={n} value={n}>
                 {n}
               </option>

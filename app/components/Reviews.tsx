@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -22,7 +22,7 @@ interface Rating {
 interface ReviewsProps {
   movieId: number;
   token?: string | null;
-  type?: "movie" | "series";
+  type?: 'movie' | 'series';
 }
 
 export default function Reviews({ movieId, token }: ReviewsProps) {
@@ -31,15 +31,14 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
 
   const [reviews, setReviews] = useState<Review[]>([]);
   const [ratings, setRatings] = useState<Rating[]>([]);
-  const [newReview, setNewReview] = useState("");
+  const [newReview, setNewReview] = useState('');
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
 
-
   // --- Log aktuálneho používateľa z kontextu
   useEffect(() => {
-    console.log("Current user from context:", user);
+    console.log('Current user from context:', user);
   }, [user]);
 
   // --- Načítanie recenzií a hodnotení ---
@@ -47,25 +46,23 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
 
   const fetchReviewsAndRatings = async () => {
     try {
-      console.log("Fetching reviews and ratings for movieId:", movieId);
+      console.log('Fetching reviews and ratings for movieId:', movieId);
 
       // --- Reviews ---
       const resReviews = await fetch(`${apiUrl}/api/reviews?movie_id=${movieId}`);
       const dataReviews = await resReviews.json();
-      console.log("Reviews fetched:", dataReviews);
+      console.log('Reviews fetched:', dataReviews);
       setReviews(dataReviews);
 
       // --- Ratings ---
       const resRatings = await fetch(`${apiUrl}/api/ratings/${movieId}`);
       const dataRatings = await resRatings.json();
-      console.log("Ratings fetched:", dataRatings);
+      console.log('Ratings fetched:', dataRatings);
       setRatings(dataRatings);
-
     } catch (err) {
-      console.error("Failed to fetch reviews or ratings:", err);
+      console.error('Failed to fetch reviews or ratings:', err);
     }
   };
-
 
   useEffect(() => {
     fetchReviewsAndRatings();
@@ -75,48 +72,45 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
   const handleAddReview = async () => {
     if (!actualToken || !newReview.trim()) return;
     setLoading(true);
-    console.log("Adding review:", newReview, "Token:", actualToken);
+    console.log('Adding review:', newReview, 'Token:', actualToken);
 
     try {
       const res = await fetch(`${apiUrl}/api/reviews`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${actualToken}`,
         },
         body: JSON.stringify({ movie_id: movieId, content: newReview }),
       });
 
-
-
       const data = await res.json(); // <-- načítame JSON z backendu
 
-      if (!res.ok) throw new Error(data.error || "Failed to add review");
+      if (!res.ok) throw new Error(data.error || 'Failed to add review');
       // <-- použije správu z backendu, ak existuje, inak default
 
-      console.log("Review added successfully");
+      console.log('Review added successfully');
       await fetchReviewsAndRatings();
-      setNewReview("");
+      setNewReview('');
     } catch (err: any) {
       console.error(err);
 
       // Tu môžeš pridať kreatívnu hlášku
-      alert(err.message || "Please behave! Your review contains inappropriate language.");
+      alert(err.message || 'Please behave! Your review contains inappropriate language.');
     } finally {
       setLoading(false);
     }
   };
 
-
   // --- Vracia rating používateľa podľa user_id ---
   const getUserRating = (user_id: number) => {
-    const ratingObj = ratings.find((r) => r.user_id === user_id);
+    const ratingObj = ratings.find(r => r.user_id === user_id);
     return ratingObj ? ratingObj.rating : null;
   };
 
   // --- Otvorenie modal pre mazanie ---
   const openDeleteModal = (reviewId: number) => {
-    console.log("Opening delete modal for reviewId:", reviewId);
+    console.log('Opening delete modal for reviewId:', reviewId);
     setSelectedReviewId(reviewId);
     setModalOpen(true);
   };
@@ -130,23 +124,22 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
   // --- Mazanie recenzie ---
   const handleDeleteReview = async () => {
     if (!actualToken || selectedReviewId === null) return;
-    console.log("Deleting reviewId:", selectedReviewId, "Token:", actualToken);
+    console.log('Deleting reviewId:', selectedReviewId, 'Token:', actualToken);
 
     try {
       const res = await fetch(`${apiUrl}/api/reviews/${selectedReviewId}`, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: { Authorization: `Bearer ${actualToken}` },
       });
 
-
-      console.log("Delete response:", res);
-      if (!res.ok) throw new Error("Failed to delete review");
+      console.log('Delete response:', res);
+      if (!res.ok) throw new Error('Failed to delete review');
 
       await fetchReviewsAndRatings();
       closeModal();
     } catch (err) {
       console.error(err);
-      alert("Failed to delete review");
+      alert('Failed to delete review');
     }
   };
 
@@ -201,7 +194,7 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
         <div className="mb-6 p-4 bg-gray-900 rounded-lg shadow-md border border-gray-700">
           <textarea
             value={newReview}
-            onChange={(e) => setNewReview(e.target.value)}
+            onChange={e => setNewReview(e.target.value)}
             placeholder="Write your review..."
             className="w-full p-3 rounded bg-gray-700 text-white resize-none focus:outline-none focus:ring-2 focus:ring-red-900 placeholder-gray-100 placeholder:text-xl"
             rows={7}
@@ -212,7 +205,7 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
               disabled={loading}
               className="px-4 py-2 my-2 w-[220px] bg-red-700 hover:bg-red-600 rounded transition disabled:opacity-50"
             >
-              {loading ? "Submitting..." : "Submit"}
+              {loading ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </div>
@@ -223,7 +216,7 @@ export default function Reviews({ movieId, token }: ReviewsProps) {
         <p className="text-gray-400">No reviews yet.</p>
       ) : (
         <div className="grid gap-5 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((r) => (
+          {reviews.map(r => (
             <ReviewBubble key={r.id} review={r} />
           ))}
         </div>

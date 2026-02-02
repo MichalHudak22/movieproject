@@ -1,9 +1,9 @@
-"use client"; // teraz je client component, aby fungovalo useState
+'use client'; // teraz je client component, aby fungovalo useState
 
-import { useState, useEffect } from "react";
-import { getTrendingTV, getPopularTV, getTopRatedTV } from "@/lib/tmdb";
-import SearchBar from "@/app/components/SearchBar";
-import SectionRowClient from "@/app/components/SectionRowClient";
+import { useState, useEffect } from 'react';
+import { getTrendingTV, getPopularTV, getTopRatedTV } from '@/lib/tmdb';
+import SearchBar from '@/app/components/SearchBar';
+import SectionRowClient from '@/app/components/SectionRowClient';
 
 export default function TVPage() {
   const [trending, setTrending] = useState<any[]>([]);
@@ -11,22 +11,20 @@ export default function TVPage() {
   const [topRated, setTopRated] = useState<any[]>([]);
 
   useEffect(() => {
-  async function fetchData() {
-    const trendingData = await getTrendingTV();
-    const popularData = await getPopularTV();
-    const topRatedData = await getTopRatedTV();
+    async function fetchData() {
+      const trendingData = await getTrendingTV();
+      const popularData = await getPopularTV();
+      const topRatedData = await getTopRatedTV();
 
-    const dedupe = (arr: any[]) =>
-      Array.from(new Map(arr.map(item => [item.id, item])).values());
+      const dedupe = (arr: any[]) => Array.from(new Map(arr.map(item => [item.id, item])).values());
 
-    setTrending(dedupe(trendingData.results));
-    setPopular(dedupe(popularData.results));
-    setTopRated(dedupe(topRatedData.results));
-  }
+      setTrending(dedupe(trendingData.results));
+      setPopular(dedupe(popularData.results));
+      setTopRated(dedupe(topRatedData.results));
+    }
 
-  fetchData();
-}, []);
-
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">

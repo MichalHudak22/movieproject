@@ -1,11 +1,11 @@
-import { getTrendingMovies, getPopularMovies, getTopRatedMovies, getTopRatedTV } from "@/lib/tmdb";
-import Link from "next/link";
-import SearchBar from "@/app/components/SearchBar";
-import DraggableRow from "@/app/components/DraggableRow";
-import SectionRowClient from "./components/SectionRowClient";
-import HomeTopRatedByUsers from "@/app/components/HomeTopRatedByUsers";
-import LeaderboardUsers from "@/app/components/LeaderboardUsers";
-
+import { getTrendingMovies, getPopularMovies, getTopRatedMovies, getTopRatedTV } from '@/lib/tmdb';
+import Link from 'next/link';
+import SearchBar from '@/app/components/SearchBar';
+import DraggableRow from '@/app/components/DraggableRow';
+import SectionRowClient from './components/SectionRowClient';
+import HomeTopRatedByUsers from '@/app/components/HomeTopRatedByUsers';
+import LeaderboardUsers from '@/app/components/LeaderboardUsers';
+import Image from 'next/image';
 
 export default async function Home() {
   const trendingData = await getTrendingMovies();
@@ -40,11 +40,9 @@ export default async function Home() {
       <SectionRowClient title="Top Rated" items={topRated} type="movie" />
       <SectionRowClient title="Top Series" items={topSeries} type="series" />
 
-
       <div className="mb-10">
         <LeaderboardUsers />
       </div>
-
     </div>
   );
 }
@@ -56,7 +54,7 @@ function SectionRow({
 }: {
   title: string;
   items: any[];
-  type: "movie" | "series";
+  type: 'movie' | 'series';
 }) {
   return (
     <div className="mb-12">
@@ -64,17 +62,22 @@ function SectionRow({
 
       {/* Drag scrollbar */}
       <DraggableRow>
-        {items.map((item) => (
+        {items.map(item => (
           <Link
             key={item.id}
             href={`/${type}/${item.id}`}
             className="min-w-[150px] bg-gray-800/60 rounded-lg p-2 hover:scale-105 transition-transform"
           >
-            <img
-              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-              alt={item.title || item.name}
-              className="rounded-lg mb-2"
-            />
+            <div className="w-[150px] h-[225px] mb-2">
+              <Image
+                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                alt={item.title || item.name}
+                width={150}
+                height={225}
+                className="rounded-lg object-cover"
+              />
+            </div>
+
             <h3 className="text-sm font-semibold">{item.title || item.name}</h3>
           </Link>
         ))}

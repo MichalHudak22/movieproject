@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import RatingCard from "./RatingCard";
+import { useState } from 'react';
+import RatingCard from './RatingCard';
 
 interface Rating {
   imdb_id: string;
-  type: "movie" | "series";
+  type: 'movie' | 'series';
   rating: number;
   title?: string;
   poster?: string;
@@ -15,9 +15,9 @@ interface Rating {
 interface RatingsGridProps {
   ratings: Rating[];
   token: string | null;
-  onRatingChange: (imdb_id: string, type: "movie" | "series", newRating: number) => void;
+  onRatingChange: (imdb_id: string, type: 'movie' | 'series', newRating: number) => void;
   onDeleteRating: (imdb_id: string) => void; // funkcia na odstránenie ratingu
-  getUrlType: (type: "movie" | "series") => string;
+  getUrlType: (type: 'movie' | 'series') => string;
 }
 
 export default function RatingsGrid({
@@ -39,18 +39,18 @@ export default function RatingsGrid({
     }
   };
 
-  const renderCards = (type: "movie" | "series") =>
+  const renderCards = (type: 'movie' | 'series') =>
     ratings
-      .filter((r) => r.type === type)
+      .filter(r => r.type === type)
       .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-      .map((r) => (
+      .map(r => (
         <RatingCard
           key={r.imdb_id}
           rating={r}
           token={token}
           getUrlType={getUrlType}
           onRatingChange={onRatingChange}
-          onDeleteClick={(imdb_id) => setModal({ open: true, imdb_id })}
+          onDeleteClick={imdb_id => setModal({ open: true, imdb_id })}
         />
       ));
 
@@ -60,20 +60,20 @@ export default function RatingsGrid({
         <p className="text-gray-400">You have not rated any movies or series yet.</p>
       )}
 
-      {ratings.some((r) => r.type === "movie") && (
+      {ratings.some(r => r.type === 'movie') && (
         <div className="mb-12">
           <h2 className="text-3xl font-semibold mb-6 text-gray-200">Movies</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-6">
-            {renderCards("movie")}
+            {renderCards('movie')}
           </div>
         </div>
       )}
 
-      {ratings.some((r) => r.type === "series") && (
+      {ratings.some(r => r.type === 'series') && (
         <div className="mb-12">
           <h2 className="text-3xl font-semibold mb-6 text-gray-200">Series</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-6">
-            {renderCards("series")}
+            {renderCards('series')}
           </div>
         </div>
       )}

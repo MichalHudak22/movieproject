@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
   min-height: 100%;
   color: #ffffff; /* biely text */
   font-family: sans-serif;
@@ -20,13 +21,9 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75); /* dark overlay */
+  background: rgba(0, 0, 0, 0.75); /* dark overlay */
   z-index: 0;
 }
-
-
-
-
 
 /* Gradient animácia pre text */
 @keyframes gradient-red {
@@ -40,12 +37,7 @@ body::before {
 
 /* Utility trieda na textový gradient */
 .animate-gradient-red {
-  background: linear-gradient(
-    90deg,
-    #cf0000,
-    #6d0000,
-    #cf0000
-  );
+  background: linear-gradient(90deg, #cf0000, #6d0000, #cf0000);
   background-size: 200% 200%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -55,12 +47,7 @@ body::before {
 
 /* Utility trieda – light gray → soft red → light gray */
 .animate-gradient-lighted {
-  background: linear-gradient(
-    90deg,
-    #e5e7eb, 
-    #ffc3c3, 
-    #e5e7eb 
-  );
+  background: linear-gradient(90deg, #e5e7eb, #ffc3c3, #e5e7eb);
   background-size: 200% 200%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -68,24 +55,15 @@ body::before {
   animation: gradient-red 18s linear infinite;
 }
 
-/* Utility trieda – light gray → soft red → light gray */ 
+/* Utility trieda – light gray → soft red → light gray */
 .animate-gradient-info {
-  background: linear-gradient(
-    90deg,
-    #ec9595, 
-    #ffd3d3,
-    #ec9595
-  );
+  background: linear-gradient(90deg, #ec9595, #ffd3d3, #ec9595);
   background-size: 200% 200%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   animation: gradient-red 8s linear infinite;
 }
-
-
-
-
 
 /* Chrome, Edge, Safari */
 .flex::-webkit-scrollbar {
@@ -133,5 +111,3 @@ input:autofill {
   background-color: #374151 !important; /* bg-gray-700 */
   color: white !important;
 }
-
-

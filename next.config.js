@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ['image.tmdb.org'], // <-- povolené domény pre next/image
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

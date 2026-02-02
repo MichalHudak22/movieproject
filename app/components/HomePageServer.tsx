@@ -1,11 +1,6 @@
-import {
-  getTrendingMovies,
-  getPopularMovies,
-  getTopRatedMovies,
-  getTopRatedTV,
-} from "@/lib/tmdb";
-import SectionRowClient from "./SectionRowClient"; // client komponent pre modal
-import SearchBar from "@/app/components/SearchBar";
+import { getTrendingMovies, getPopularMovies, getTopRatedMovies, getTopRatedTV } from '@/lib/tmdb';
+import SectionRowClient from './SectionRowClient'; // client komponent pre modal
+import SearchBar from '@/app/components/SearchBar';
 
 export default async function HomePageServer() {
   const trendingData = await getTrendingMovies();

@@ -1,22 +1,19 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
-type SearchType = "multi" | "tv" | "person";
+type SearchType = 'multi' | 'tv' | 'person';
 
 const PLACEHOLDERS: Record<SearchType, string> = {
-  multi: "Search for movies, TV shows, or actors...",
-  tv: "Search for TV shows...",
-  person: "Search for actors...",
+  multi: 'Search for movies, TV shows, or actors...',
+  tv: 'Search for TV shows...',
+  person: 'Search for actors...',
 };
 
-export default function SearchBar({
-  searchType = "multi",
-}: {
-  searchType?: SearchType;
-}) {
-  const [query, setQuery] = useState("");
+export default function SearchBar({ searchType = 'multi' }: { searchType?: SearchType }) {
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,8 +24,8 @@ export default function SearchBar({
         setIsOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,15 +39,13 @@ export default function SearchBar({
     }
 
     try {
-      const res = await fetch(
-        `/api/search?q=${encodeURIComponent(value)}&type=${searchType}`
-      );
+      const res = await fetch(`/api/search?q=${encodeURIComponent(value)}&type=${searchType}`);
       const data = await res.json();
 
       setResults(data.results || []);
       setIsOpen(data.results.length > 0);
     } catch (error) {
-      console.error("Search failed:", error);
+      console.error('Search failed:', error);
       setResults([]);
       setIsOpen(false);
     }
@@ -58,13 +53,13 @@ export default function SearchBar({
 
   // 👇 URL resolver – čitateľné a bezpečné
   const getHref = (item: any) => {
-    if (item.media_type === "movie") return `/movie/${item.id}`;
-    if (item.media_type === "tv") return `/series/${item.id}`;
-    if (item.media_type === "person") return `/person/${item.id}`;
+    if (item.media_type === 'movie') return `/movie/${item.id}`;
+    if (item.media_type === 'tv') return `/series/${item.id}`;
+    if (item.media_type === 'person') return `/person/${item.id}`;
 
     // fallback pre /search/tv a /search/person
-    if (searchType === "tv") return `/series/${item.id}`;
-    if (searchType === "person") return `/person/${item.id}`;
+    if (searchType === 'tv') return `/series/${item.id}`;
+    if (searchType === 'person') return `/person/${item.id}`;
 
     return `/movie/${item.id}`;
   };
@@ -93,21 +88,23 @@ export default function SearchBar({
           {/* Dropdown */}
           <div className="absolute top-full left-0 right-0 mt-1 z-20">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-black p-3 rounded-lg">
-              {results.map((item) => (
+              {results.map(item => (
                 <Link
                   key={item.id}
                   href={getHref(item)}
                   onClick={() => setIsOpen(false)}
-                  className="bg-gray-900 rounded-lg p-2 hover:scale-105 transition"
+                  className="bg-gray-900 rounded-lg p-2 hover:scale-105 transition relative"
                 >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w200${item.poster_path || item.profile_path}`}
-                    alt={item.title || item.name}
-                    className="rounded-lg h-32 w-full object-cover"
-                  />
-                  <p className="text-white text-sm mt-1 truncate">
-                    {item.title || item.name}
-                  </p>
+                  <div className="relative w-full h-32">
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w200${item.poster_path || item.profile_path}`}
+                      alt={item.title || item.name}
+                      width={200}
+                      height={300}
+                      className="rounded-lg object-cover w-full h-32"
+                    />
+                  </div>
+                  <p className="text-white text-sm mt-1 truncate">{item.title || item.name}</p>
                 </Link>
               ))}
             </div>

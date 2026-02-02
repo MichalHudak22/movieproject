@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createContext, useState, useEffect, ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface User {
   id: number;
@@ -19,10 +19,10 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   token: null,
-  setToken: () => { },
+  setToken: () => {},
   user: null,
-  setUser: () => { },
-  logout: () => { },
+  setUser: () => {},
+  logout: () => {},
 });
 
 interface Props {
@@ -37,19 +37,19 @@ export const AuthProvider = ({ children }: Props) => {
   const router = useRouter();
 
   const logout = () => {
-    console.log("Logging out...");
+    console.log('Logging out...');
     setTokenState(null);
     setUserState(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     if (logoutTimeout) clearTimeout(logoutTimeout);
-    router.push("/login");
+    router.push('/login');
   };
 
   // načítanie tokenu a usera z localStorage pri mount
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
 
     if (storedToken) setTokenState(storedToken);
     if (storedUser) setUserState(JSON.parse(storedUser));
@@ -58,20 +58,20 @@ export const AuthProvider = ({ children }: Props) => {
   // nastavenie tokenu + timeout na logout
   const setToken = (newToken: string | null, expiresInSeconds?: number) => {
     if (newToken) {
-      console.log("Setting new token:", newToken);
-      localStorage.setItem("token", newToken);
+      console.log('Setting new token:', newToken);
+      localStorage.setItem('token', newToken);
       setTokenState(newToken);
 
       if (logoutTimeout) clearTimeout(logoutTimeout);
       if (expiresInSeconds) {
         logoutTimeout = setTimeout(() => {
-          console.log("Token expired, logging out...");
+          console.log('Token expired, logging out...');
           logout();
         }, expiresInSeconds * 1000);
       }
     } else {
-      console.log("Removing token");
-      localStorage.removeItem("token");
+      console.log('Removing token');
+      localStorage.removeItem('token');
       setTokenState(null);
       if (logoutTimeout) clearTimeout(logoutTimeout);
     }
@@ -79,18 +79,16 @@ export const AuthProvider = ({ children }: Props) => {
 
   const setUser = (newUser: User | null) => {
     if (newUser) {
-      console.log("Setting new user:", newUser);
-      localStorage.setItem("user", JSON.stringify(newUser));
+      console.log('Setting new user:', newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
     }
     setUserState(newUser);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ token, setToken, user, setUser, logout }}
-    >
+    <AuthContext.Provider value={{ token, setToken, user, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

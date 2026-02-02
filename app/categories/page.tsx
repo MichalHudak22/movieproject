@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getMoviesByGenre } from "@/lib/tmdb";
-import SectionRowClient from "@/app/components/SectionRowClient";
-import GenreFilter from "@/app/components/GenreFilter";
+import { useEffect, useState } from 'react';
+import { getMoviesByGenre } from '@/lib/tmdb';
+import SectionRowClient from '@/app/components/SectionRowClient';
+import GenreFilter from '@/app/components/GenreFilter';
 
 const API = process.env.NEXT_PUBLIC_API_URL; // 🔥 jednotné URL
 
 const categories = [
-  { id: 28, name: "Action" },
-  { id: 18, name: "Drama" },
-  { id: 12, name: "Adventure" },
-  { id: 53, name: "Thriller" },
-  { id: 878, name: "Science Fiction" },
-  { id: 27, name: "Horror" },
-  { id: 35, name: "Comedy" },
-  { id: 16, name: "Animation" },
+  { id: 28, name: 'Action' },
+  { id: 18, name: 'Drama' },
+  { id: 12, name: 'Adventure' },
+  { id: 53, name: 'Thriller' },
+  { id: 878, name: 'Science Fiction' },
+  { id: 27, name: 'Horror' },
+  { id: 35, name: 'Comedy' },
+  { id: 16, name: 'Animation' },
 ];
 
 export default function CategoriesPage() {
@@ -23,11 +23,11 @@ export default function CategoriesPage() {
   const [topMovies, setTopMovies] = useState<any[]>([]);
   const [topSeries, setTopSeries] = useState<any[]>([]);
 
-  async function fetchTmdbDetail(id: string, type: "movie" | "series") {
-    const tmdbType = type === "series" ? "tv" : "movie";
+  async function fetchTmdbDetail(id: string, type: 'movie' | 'series') {
+    const tmdbType = type === 'series' ? 'tv' : 'movie';
 
     const res = await fetch(
-      `https://api.themoviedb.org/3/${tmdbType}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+      `https://api.themoviedb.org/3/${tmdbType}/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
     );
 
     if (!res.ok) return null;
@@ -43,7 +43,7 @@ export default function CategoriesPage() {
 
         const moviesWithDetails = await Promise.all(
           movies.map(async (m: any) => {
-            const detail = await fetchTmdbDetail(m.imdb_id, "movie");
+            const detail = await fetchTmdbDetail(m.imdb_id, 'movie');
             if (!detail) return null;
 
             return {
@@ -51,7 +51,7 @@ export default function CategoriesPage() {
               averageRating: m.averageRating,
               votes: m.votes,
             };
-          })
+          }),
         );
 
         setTopMovies(moviesWithDetails.filter(Boolean));
@@ -62,7 +62,7 @@ export default function CategoriesPage() {
 
         const seriesWithDetails = await Promise.all(
           series.map(async (s: any) => {
-            const detail = await fetchTmdbDetail(s.imdb_id, "series");
+            const detail = await fetchTmdbDetail(s.imdb_id, 'series');
             if (!detail) return null;
 
             return {
@@ -70,27 +70,27 @@ export default function CategoriesPage() {
               averageRating: s.averageRating,
               votes: s.votes,
             };
-          })
+          }),
         );
 
         setTopSeries(seriesWithDetails.filter(Boolean));
       } catch (err) {
-        console.error("Error fetching top ratings:", err);
+        console.error('Error fetching top ratings:', err);
       }
     }
 
     async function fetchGenres() {
       try {
         const data = await Promise.all(
-          categories.map(async (cat) => {
+          categories.map(async cat => {
             const res = await getMoviesByGenre(cat.id);
             return { name: cat.name, items: res.results };
-          })
+          }),
         );
 
         setGenreData(data);
       } catch (err) {
-        console.error("Error fetching genre data:", err);
+        console.error('Error fetching genre data:', err);
       }
     }
 
@@ -119,13 +119,8 @@ export default function CategoriesPage() {
         <SectionRowClient title="CinemaSpace Series Ratings" items={topSeries} type="series" />
       )}
 
-      {genreData.map((genre) => (
-        <SectionRowClient
-          key={genre.name}
-          title={genre.name}
-          items={genre.items}
-          type="movie"
-        />
+      {genreData.map(genre => (
+        <SectionRowClient key={genre.name} title={genre.name} items={genre.items} type="movie" />
       ))}
     </div>
   );

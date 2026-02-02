@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState, useContext } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { AuthContext } from "../context/AuthContext"; // cesta k AuthContext
+import { useState, useContext } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { AuthContext } from '../context/AuthContext'; // cesta k AuthContext
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const verified = searchParams.get("verified");
+  const verified = searchParams.get('verified');
 
   const { setToken, setUser } = useContext(AuthContext);
 
@@ -23,27 +23,26 @@ export default function LoginPage() {
 
     try {
       const res = await fetch(`${API}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
 
       const data = await res.json();
       setMessage(data.message);
 
       if (res.ok) {
-        console.log("Login successful, received user:", data.user);
+        console.log('Login successful, received user:', data.user);
 
         // Token platí 2 minúty → 2 * 60 sekúnd
         setToken(data.token, 3 * 60 * 60);
         setUser(data.user);
 
-        router.push("/");
+        router.push('/');
       }
     } catch (err) {
       console.error(err);
-      setMessage("Server error");
+      setMessage('Server error');
     }
   };
 
@@ -55,27 +54,31 @@ export default function LoginPage() {
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
-        <label htmlFor="email" className="sr-only">Email</label>
+        <label htmlFor="email" className="sr-only">
+          Email
+        </label>
         <input
           type="email"
           id="email"
           name="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           autoComplete="email"
           className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
           required
         />
 
-        <label htmlFor="password" className="sr-only">Password</label>
+        <label htmlFor="password" className="sr-only">
+          Password
+        </label>
         <input
           type="password"
           id="password"
           name="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           autoComplete="current-password"
           className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-700"
           required
@@ -89,8 +92,7 @@ export default function LoginPage() {
         </button>
 
         <p className="mt-4 text-center text-gray-300">
-          Don&apos;t have an account?{" "}
-
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="text-red-600 hover:text-red-500">
             Register here
           </Link>
@@ -98,8 +100,9 @@ export default function LoginPage() {
 
         {message && (
           <p
-            className={`mt-4 text-center text-sm ${verified === "1" ? "text-green-500" : "text-red-500"
-              }`}
+            className={`mt-4 text-center text-sm ${
+              verified === '1' ? 'text-green-500' : 'text-red-500'
+            }`}
           >
             {message}
           </p>

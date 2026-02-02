@@ -1,11 +1,7 @@
-"use client";
-import { useRef, useState, useEffect } from "react";
+'use client';
+import { useRef, useState, useEffect } from 'react';
 
-export default function DraggableRow({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DraggableRow({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -16,7 +12,7 @@ export default function DraggableRow({
     if (!ref.current) return;
     const slider = ref.current;
     setIsDown(true);
-    slider.classList.add("cursor-grabbing");
+    slider.classList.add('cursor-grabbing');
     const rect = slider.getBoundingClientRect();
     setStartX(e.pageX - rect.left);
     setScrollLeft(slider.scrollLeft);
@@ -24,7 +20,7 @@ export default function DraggableRow({
 
   const mouseUpOrLeave = () => {
     setIsDown(false);
-    ref.current?.classList.remove("cursor-grabbing");
+    ref.current?.classList.remove('cursor-grabbing');
   };
 
   const mouseMove = (e: React.MouseEvent) => {
@@ -67,8 +63,8 @@ export default function DraggableRow({
         setScrollLeft(ref.current.scrollLeft);
       }
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
