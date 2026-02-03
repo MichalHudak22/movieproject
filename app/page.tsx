@@ -74,6 +74,7 @@ function SectionRow({
                 alt={item.title || item.name}
                 width={150}
                 height={225}
+                unoptimized
                 className="rounded-lg object-cover"
               />
             </div>

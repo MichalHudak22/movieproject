@@ -55,6 +55,7 @@ export default function PersonDetail({ params }: PersonDetailProps) {
           <Image
             src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
             alt={person.name}
+            unoptimized
             width={300}
             height={400}
             className="object-cover w-full h-full rounded-lg"
@@ -116,6 +117,7 @@ function SectionCarousel({ title, credits }: { title: string; credits: any[] }) 
                   alt={item.title || item.name}
                   width={180}
                   height={270}
+                  unoptimized
                   className="object-cover w-full h-full rounded-lg"
                 />
               </div>
