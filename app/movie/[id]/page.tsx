@@ -120,7 +120,6 @@ export default function MovieDetail({ params }: MovieDetailProps) {
           width={500} // odhadnutá šírka podľa TMDB
           height={750} // odhadnutá výška podľa TMDB (proporcie posteru)
           className="rounded w-2/3 lg md:w-1/3"
-          priority={true} // načíta sa hneď pri load
         />
 
         {/* Info */}

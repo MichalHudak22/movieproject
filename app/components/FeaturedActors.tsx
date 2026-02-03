@@ -67,8 +67,7 @@ export default function FeaturedActors() {
                   width={160}
                   height={160}
                   className="rounded-full object-cover"
-                  style={{ width: '160px', height: '160px' }} // explicitne obe dimenzie
-                  priority
+                  style={{ width: '160px', height: '160px' }} 
                 />
               </div>
             ) : (
