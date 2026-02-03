@@ -84,6 +84,11 @@ export default function GenreFilter() {
     loadMovies();
   }, [selectedGenres]);
 
+  function getPosterUrl(path?: string) {
+    return path ? `https://image.tmdb.org/t/p/w500${path}` : '/defaultimg.jpg';
+  }
+
+
   return (
     <div className="text-white mb-10">
       {/* GENRE BUTTONS */}
@@ -94,10 +99,9 @@ export default function GenreFilter() {
               key={g.id}
               onClick={() => toggleGenre(g.id)}
               className={`px-2 md:px-3 py-1 text-[10px] sm:text-sm rounded-full font-semibold border transition-all
-                ${
-                  selectedGenres.includes(g.id)
-                    ? 'bg-red-700 border-red-500 scale-105'
-                    : 'bg-gray-900 border-gray-600 hover:bg-red-700'
+                ${selectedGenres.includes(g.id)
+                  ? 'bg-red-700 border-red-500 scale-105'
+                  : 'bg-gray-900 border-gray-600 hover:bg-red-700'
                 }`}
             >
               {g.name}
@@ -128,12 +132,15 @@ export default function GenreFilter() {
                   >
                     <div className="w-full mb-2">
                       <Image
-                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                        alt={movie.title}
+                        src={getPosterUrl(movie.poster_path)}
+                        alt={movie.title || 'Poster'}
                         width={300}
                         height={450}
                         className="rounded-lg object-cover"
+                        style={{ width: 'auto', height: 'auto' }}
                       />
+
+
                     </div>
 
                     <h3 className="text-xs sm:text-sm font-semibold text-center truncate">

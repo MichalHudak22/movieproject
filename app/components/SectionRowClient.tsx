@@ -28,8 +28,8 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
       const avg =
         data.length > 0
           ? Number(
-              (data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1),
-            )
+            (data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1),
+          )
           : null;
       setAverageRating(avg);
     } catch (err) {
@@ -62,7 +62,10 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
                   width={300}
                   height={450}
                   className="rounded-lg object-cover w-full h-48 md:h-56"
+                  style={{ width: 'auto', height: 'auto' }}
+                  priority={index === 0} // ⚡ prvý obrázok carouselu
                 />
+
               </div>
             )}
             <h3 className="text-sm md:text-base font-semibold text-gray-100">
