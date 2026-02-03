@@ -108,7 +108,7 @@ export default function SearchBar({ searchType = 'multi' }: { searchType?: Searc
                       alt={item.title || item.name || 'Poster'}
                       width={200}
                       height={300}
-                      unoptimized // ⚡ dôležité pre zabránenie 500 Internal Server Error
+                      unoptimized 
                       className="rounded-lg object-cover w-full h-32"
                     />
                   </div>

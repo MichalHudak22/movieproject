@@ -60,6 +60,7 @@ function SectionCarousel({ title, actors }: { title: string; actors: any[] }) {
                   alt={person.name}
                   width={150}
                   height={150}
+                  unoptimized
                   className="object-cover w-full h-full"
                 />
               </div>

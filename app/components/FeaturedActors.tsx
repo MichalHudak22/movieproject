@@ -66,6 +66,7 @@ export default function FeaturedActors() {
                   alt={actor.name}
                   width={160}
                   height={160}
+                  unoptimized
                   className="rounded-full object-cover"
                   style={{ width: '160px', height: '160px' }} 
                 />

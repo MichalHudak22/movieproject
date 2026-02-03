@@ -58,6 +58,7 @@ export default function RatingCard({
             alt="poster"
             width={300}
             height={384}
+            unoptimized
             className="object-cover w-full h-64 rounded-lg"
           />
         </Link>
