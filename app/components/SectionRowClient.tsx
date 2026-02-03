@@ -28,8 +28,8 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
       const avg =
         data.length > 0
           ? Number(
-            (data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1),
-          )
+              (data.reduce((sum: number, x: any) => sum + x.rating, 0) / data.length).toFixed(1),
+            )
           : null;
       setAverageRating(avg);
     } catch (err) {
@@ -43,6 +43,10 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
     }
   };
 
+  function getPosterUrl(path?: string) {
+    return path ? `https://image.tmdb.org/t/p/w500${path}` : '/defaultimg.jpg';
+  }
+
   return (
     <div className="mb-12">
       <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">{title}</h2>
@@ -53,22 +57,17 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
             className="min-w-[150px] md:min-w-[180px] bg-gray-800/60 rounded-lg p-2 hover:scale-105 transition-transform cursor-pointer"
             onClick={() => handleOpenModal(item)}
           >
-            {/* Používame item, nie selectedItem */}
-            {item.poster_path && (
-              <div className="relative w-full h-48 md:h-56">
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                  alt={item.title || item.name || 'Poster'}
-                  width={300}
-                  height={450}
-                  className="rounded-lg object-cover w-full h-48 md:h-56"
-                  style={{ width: 'auto', height: 'auto' }}
-                  priority={index === 0} // ⚡ prvý obrázok carouselu
-                />
-
-              </div>
-            )}
-            <h3 className="text-sm md:text-base font-semibold text-gray-100">
+            <div className="relative w-full aspect-[2/3] mb-2">
+              <Image
+                src={getPosterUrl(item.poster_path)}
+                alt={item.title || item.name || 'Poster'}
+                fill
+                className="rounded-lg object-cover"
+                unoptimized // pre externé URL
+                priority={index === 0} // prvý obrázok carouselu načítaj ihneď
+              />
+            </div>
+            <h3 className="text-sm md:text-base font-semibold text-gray-100 truncate">
               {item.title || item.name}
             </h3>
           </div>
@@ -88,19 +87,16 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
             <div className="flex flex-col md:flex-row overflow-y-auto md:overflow-visible">
               {/* Poster */}
-              {selectedItem.poster_path && (
-                <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4">
-                  <div className="relative w-full h-[35vh] md:h-auto max-h-[35vh] md:max-h-none mx-auto">
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w500${selectedItem.poster_path}`}
-                      alt={selectedItem.title || selectedItem.name}
-                      width={400}
-                      height={600}
-                      className="rounded-lg object-cover w-full max-h-[35vh] md:max-h-none mx-auto"
-                    />
-                  </div>
-                </div>
-              )}
+              <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4 relative aspect-[2/3] mx-auto">
+                <Image
+                  src={getPosterUrl(selectedItem.poster_path)}
+                  alt={selectedItem.title || selectedItem.name}
+                  fill
+                  className="rounded-lg object-cover"
+                  unoptimized
+                  priority
+                />
+              </div>
 
               {/* Info */}
               <div className="md:w-2/3 p-3 md:p-4 flex flex-col gap-2">

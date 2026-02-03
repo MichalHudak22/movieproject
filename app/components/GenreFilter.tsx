@@ -46,33 +46,28 @@ export default function GenreFilter() {
       try {
         let allResults: any[] = [];
         const firstRes = await fetch(
-          `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${selectedGenres.join(
-            ',',
-          )}&language=en-US&page=1`,
+          `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${selectedGenres.join(',')}&language=en-US&page=1`
         );
         const firstData = await firstRes.json();
         allResults = allResults.concat(firstData.results);
 
-        const totalPages = Math.min(firstData.total_pages, 10); // nechceme presiahnuť limit 10 stránok
+        const totalPages = Math.min(firstData.total_pages, 10);
 
         for (let page = 2; page <= totalPages; page++) {
           const res = await fetch(
-            `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${selectedGenres.join(
-              ',',
-            )}&language=en-US&page=${page}`,
+            `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${selectedGenres.join(',')}&language=en-US&page=${page}`
           );
           const data = await res.json();
           allResults = allResults.concat(data.results);
         }
 
-        // OR filter: aspoň jeden vybraný žáner
+        // Filter aspoň jeden vybraný žáner
         const filtered = allResults.filter((m: any) =>
-          m.genre_ids.some((gid: number) => selectedGenres.includes(gid)),
+          m.genre_ids.some((gid: number) => selectedGenres.includes(gid))
         );
 
-        // odstránenie duplicitných filmov podľa ID
+        // Odstránenie duplicitných filmov
         const uniqueMovies = Array.from(new Map(filtered.map(m => [m.id, m])).values());
-
         setMovies(uniqueMovies);
       } catch (err) {
         console.error('Failed to fetch movies', err);
@@ -84,10 +79,10 @@ export default function GenreFilter() {
     loadMovies();
   }, [selectedGenres]);
 
+  // Funkcia pre obrázky s fallbackom a unoptimized pre externé URL
   function getPosterUrl(path?: string) {
     return path ? `https://image.tmdb.org/t/p/w500${path}` : '/defaultimg.jpg';
   }
-
 
   return (
     <div className="text-white mb-10">
@@ -124,23 +119,21 @@ export default function GenreFilter() {
           ) : (
             <div className="max-h-[900px] overflow-y-auto w-[85%] mx-auto">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {movies.map(movie => (
+                {movies.map((movie, index) => (
                   <Link
                     key={movie.id}
                     href={`/movie/${movie.id}`}
                     className="bg-gray-800 p-2 rounded-lg hover:scale-105 hover:shadow-xl transition-transform flex flex-col"
                   >
-                    <div className="w-full mb-2">
+                    <div className="w-full mb-2 relative aspect-[2/3]">
                       <Image
                         src={getPosterUrl(movie.poster_path)}
                         alt={movie.title || 'Poster'}
-                        width={300}
-                        height={450}
+                        fill
                         className="rounded-lg object-cover"
-                        style={{ width: 'auto', height: 'auto' }}
+                        unoptimized // toto zabráni 500 chybe na produkcii
+                        priority={index < 5} // prvých 5 obrázkov načítaj ihneď
                       />
-
-
                     </div>
 
                     <h3 className="text-xs sm:text-sm font-semibold text-center truncate">
