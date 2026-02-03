@@ -13,8 +13,8 @@ interface Person {
 
 const featuredIds = [
   { id: 1100, label: 'Legendary Icon' }, // Arnold Schwarzenegger – TMDB ID 1100
-  { id: 974169, label: 'Rising Star' },  // Jenna Ortega – TMDB ID 974169
-  { id: 206, label: 'The Funniest' },    // Jim Carrey – TMDB ID 206
+  { id: 974169, label: 'Rising Star' }, // Jenna Ortega – TMDB ID 974169
+  { id: 206, label: 'The Funniest' }, // Jim Carrey – TMDB ID 206
 ];
 
 export default function FeaturedActors() {
@@ -70,7 +70,6 @@ export default function FeaturedActors() {
                   style={{ width: '160px', height: '160px' }} // explicitne obe dimenzie
                   priority
                 />
-
               </div>
             ) : (
               <div className="w-40 h-40 rounded-full bg-gray-700 mb-3 flex items-center justify-center">
