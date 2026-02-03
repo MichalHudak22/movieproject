@@ -51,13 +51,20 @@ export default function SearchBar({ searchType = 'multi' }: { searchType?: Searc
     }
   };
 
-  // 👇 URL resolver – čitateľné a bezpečné
+  // 👇 bezpečné získanie URL s fallbackom
+  const getPosterUrl = (item: any) => {
+    if (!item) return '/defaultimg.jpg';
+    if (item.poster_path) return `https://image.tmdb.org/t/p/w200${item.poster_path}`;
+    if (item.profile_path) return `https://image.tmdb.org/t/p/w200${item.profile_path}`;
+    return '/defaultimg.jpg';
+  };
+
   const getHref = (item: any) => {
     if (item.media_type === 'movie') return `/movie/${item.id}`;
     if (item.media_type === 'tv') return `/series/${item.id}`;
     if (item.media_type === 'person') return `/person/${item.id}`;
 
-    // fallback pre /search/tv a /search/person
+    // fallback pre searchType
     if (searchType === 'tv') return `/series/${item.id}`;
     if (searchType === 'person') return `/person/${item.id}`;
 
@@ -88,7 +95,7 @@ export default function SearchBar({ searchType = 'multi' }: { searchType?: Searc
           {/* Dropdown */}
           <div className="absolute top-full left-0 right-0 mt-1 z-20">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-black p-3 rounded-lg">
-              {results.map(item => (
+              {results.map((item, index) => (
                 <Link
                   key={item.id}
                   href={getHref(item)}
@@ -97,10 +104,11 @@ export default function SearchBar({ searchType = 'multi' }: { searchType?: Searc
                 >
                   <div className="relative w-full h-32">
                     <Image
-                      src={`https://image.tmdb.org/t/p/w200${item.poster_path || item.profile_path}`}
-                      alt={item.title || item.name}
+                      src={getPosterUrl(item)}
+                      alt={item.title || item.name || 'Poster'}
                       width={200}
                       height={300}
+                      unoptimized // ⚡ dôležité pre zabránenie 500 Internal Server Error
                       className="rounded-lg object-cover w-full h-32"
                     />
                   </div>
