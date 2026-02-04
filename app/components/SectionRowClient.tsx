@@ -87,7 +87,7 @@ export default function SectionRowClient({ title, items, type }: SectionRowClien
 
             <div className="flex flex-col md:flex-row overflow-y-auto md:overflow-visible">
               {/* Poster */}
-              <div className="md:w-1/3 flex-shrink-0 p-3 md:p-4 relative aspect-[2/3] mx-auto">
+              <div className="w-1/3 flex-shrink-0 p-3 md:p-4 relative aspect-[2/3] mx-auto">
                 <Image
                   src={getPosterUrl(selectedItem.poster_path)}
                   alt={selectedItem.title || selectedItem.name}

@@ -45,7 +45,7 @@ export default function FeaturedActors() {
   }, []);
 
   return (
-    <section className="mb-12 w-[95%] md:w-[75%] mx-auto">
+    <section className="mb-12 w-[90%] md:w-[75%] mx-auto">
       <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">Star Highlights</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-12">

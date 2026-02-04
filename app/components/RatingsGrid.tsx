@@ -62,7 +62,7 @@ export default function RatingsGrid({
 
       {ratings.some(r => r.type === 'movie') && (
         <div className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6 text-gray-200">Movies</h2>
+          <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">Movies</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-6">
             {renderCards('movie')}
           </div>
@@ -71,7 +71,7 @@ export default function RatingsGrid({
 
       {ratings.some(r => r.type === 'series') && (
         <div className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6 text-gray-200">Series</h2>
+          <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">Series</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-6">
             {renderCards('series')}
           </div>

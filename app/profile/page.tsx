@@ -186,7 +186,7 @@ export default function ProfilePage() {
           <p className="text-sm lg:text-lg text-yellow-400 font-semibold mt-1">{userRank}</p>
         )}
 
-        <p className="text-md lg:text-2xl max-w-7xl mx-auto text-left lg:text-center p-2 text-gray-200 animate-gradient-lighted pt-2">
+        <p className="text-sm lg:text-2xl max-w-7xl mx-auto text-left lg:text-center p-2 text-gray-200 animate-gradient-lighted pt-2">
           This is your personal profile in our movie database. Here you can see the movies and TV
           shows you’ve rated, update your ratings, and check out the average ratings from other
           users. Have fun exploring and discovering new favorites!
