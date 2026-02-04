@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black text-gray-300 py-3 lg:py-7 border-t border-red-700 border-opacity-80 ">
+    <footer className="w-full bg-black text-gray-300 py-3 lg:py-7 border-t border-red-800 border-opacity-80 ">
       {/* Center content */}
       <div className="max-w-4xl mx-auto text-center px-4">
         {/* Logo */}

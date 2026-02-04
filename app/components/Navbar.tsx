@@ -35,7 +35,7 @@ export default function Navbar() {
       : 'text-white hover:text-red-600';
 
   return (
-    <nav className="w-full bg-black/95 border-b border-red-700 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center fixed top-0 z-[300] h-[72px]">
+    <nav className="w-full bg-black/95 border-b-2 border-red-800 border-opacity-80 text-gray-100 px-6 py-4 flex justify-between items-center fixed top-0 z-[300] h-[60px]">
       {/* Logo */}
       <h1 className="text-xl font-black">
         <Link
@@ -141,7 +141,7 @@ export default function Navbar() {
 
       {/* Mobile Overlay Menu */}
       {isOpen && (
-        <div className="fixed inset-x-0 top-[70px] bottom-0 bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center overflow-y-auto">
+        <div className="fixed inset-x-0 top-[60px] bottom-0 bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center overflow-y-auto">
           <ul className="flex flex-col gap-8 text-3xl text-white text-center font-bold">
             {['/', '/series', '/person', '/categories', '/informations'].map((path, idx) => {
               const name = ['Home', 'Series', 'Actors', 'Categories', 'Informations'][idx];
