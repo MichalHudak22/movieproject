@@ -99,7 +99,7 @@ export default function LeaderboardUsers() {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-xl md:text-2xl font-bold mb-4 text-gray-200">Top Voters & Rankings</h2>
+      <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">Top Voters & Rankings</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {renderTable('Film & Series Champions', allUsers)}
         {renderTable('Movie Masters', movieUsers)}

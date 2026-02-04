@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
       <div className="text-center mb-5">
-        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4">
+        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4 text-gray-100">
           Explore the <span className="text-red-700 animate-gradient-red">Cinematic Universe.</span>
         </h1>
         <p className="text-md lg:text-2xl text-gray-200 animate-gradient-lighted pt-2">

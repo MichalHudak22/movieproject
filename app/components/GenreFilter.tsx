@@ -108,7 +108,7 @@ export default function GenreFilter() {
       {/* Zobraz výsledky iba ak sú vybrané žánre */}
       {selectedGenres.length > 0 && (
         <>
-          <h2 className="text-2xl font-bold my-4 w-[85%] mx-auto">Filter by Genres</h2>
+          <h2 className="text-2xl font-bold my-4 w-[95%] lg:w-[85%] mx-auto">Filter by Genres</h2>
 
           {loading ? (
             <p className="text-gray-400 text-center mb-4">Loading movies...</p>
@@ -117,7 +117,7 @@ export default function GenreFilter() {
               No movies match the selected genres.
             </p>
           ) : (
-            <div className="max-h-[900px] overflow-y-auto w-[85%] mx-auto">
+            <div className="max-h-[900px] overflow-y-auto w-[95%] lg:w-[85%] mx-auto">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
                 {movies.map((movie, index) => (
                   <Link
@@ -136,7 +136,7 @@ export default function GenreFilter() {
                       />
                     </div>
 
-                    <h3 className="text-xs sm:text-sm font-semibold text-center truncate">
+                    <h3 className="text-xs sm:text-sm py-1 font-semibold text-center truncate">
                       {movie.title}
                     </h3>
                   </Link>

@@ -177,7 +177,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
       {/* Header */}
       <div className="text-center mb-5">
-        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4">
+        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4 text-gray-100">
           Welcome <span className="text-red-400 animate-gradient-red">{user.username}</span>
         </h1>
 

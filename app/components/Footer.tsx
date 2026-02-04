@@ -14,7 +14,7 @@ export default function Footer() {
 
         {/* Subtitle */}
         <p className="text-gray-200 text-sm mt-2">
-          Created by <span className="text-white font-semibold">Michal Hudaák</span>
+          Created by <span className="text-white font-semibold">Michal Hudák</span>
         </p>
 
         {/* Small text */}
