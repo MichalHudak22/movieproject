@@ -35,9 +35,9 @@ export default async function Home() {
 
       <HomeTopRatedByUsers />
 
-      <SectionRowClient title="Trending" items={trending} type="movie" />
-      <SectionRowClient title="Popular" items={popular} type="movie" />
-      <SectionRowClient title="Top Rated" items={topRated} type="movie" />
+      <SectionRowClient title="Trending Movies" items={trending} type="movie" />
+      <SectionRowClient title="Popular Movies" items={popular} type="movie" />
+      <SectionRowClient title="Top Rated Movies" items={topRated} type="movie" />
       <SectionRowClient title="Top Series" items={topSeries} type="series" />
 
       <div className="mb-10">
