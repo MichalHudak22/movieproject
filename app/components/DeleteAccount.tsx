@@ -42,7 +42,7 @@ export default function DeleteAccount({ token, onAccountDeleted }: DeleteAccount
         </div>
 
         {/* Upozornenie */}
-        <p className="text-gray-300 text-lg">
+        <p className="text-gray-300 text-base lg:text-lg">
           ⚠️ Deleting your account will permanently remove all your ratings and profile information.
           This action cannot be undone.
         </p>

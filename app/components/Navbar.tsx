@@ -108,7 +108,7 @@ export default function Navbar() {
         </button>
 
         {dropdownOpen && token && (
-          <ul className="fixed top-[72px] right-4 w-36 bg-gray-900 border-2 border-red-800/60 rounded shadow-lg flex flex-col z-[500] overflow-hidden">
+          <ul className="fixed top-[60px] right-4 w-36 bg-gray-900 border-2 border-red-800/60 rounded shadow-lg flex flex-col z-[500] overflow-hidden">
             <li className="h-1/2">
               <Link
                 href="/profile"
