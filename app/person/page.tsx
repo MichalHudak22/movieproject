@@ -18,7 +18,7 @@ export default async function ActorsPage() {
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
       {/* HEADER - identický ako v Home */}
       <div className="text-center mb-5">
-        <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold md:my-4">
+          <h1 className="text-xl md:text-3xl lg:text-5xl font-bold md:my-4">
           Discover the <span className="text-red-700 animate-gradient-red">Stars</span>
         </h1>
         <p className="text-md lg:text-2xl text-gray-200 animate-gradient-lighted pt-2">
@@ -44,7 +44,7 @@ export default async function ActorsPage() {
 function SectionCarousel({ title, actors }: { title: string; actors: any[] }) {
   return (
     <div className="mb-12">
-      <h2 className="text-2xl font-bold mb-4 text-gray-200">{title}</h2>
+      <h2 className="text-lg md:text-xl lg:text-2xl text-gray-200 font-bold mb-4">{title}</h2>
 
       <div className="overflow-x-auto no-scrollbar pb-4 min-w-full">
         <DraggableRow>

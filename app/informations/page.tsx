@@ -16,7 +16,7 @@ export default function InformationsPage() {
       <div className="max-w-7xl mx-auto space-y-8 text-gray-100 tracking-wide bg-black/60 p-2 lg:px-8 lg:py-4 rounded-xl text-base md:text-lg leading-relaxed">
         {/* Project Overview */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Project Overview
           </h2>
           <p>
@@ -41,7 +41,7 @@ export default function InformationsPage() {
 
         {/* Authentication */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Authentication and User Accounts
           </h2>
           <p>
@@ -69,7 +69,7 @@ export default function InformationsPage() {
 
         {/* Ratings */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Ratings System
           </h2>
 
@@ -121,7 +121,7 @@ export default function InformationsPage() {
 
         {/* Reviews */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Reviews System
           </h2>
           <p>
@@ -147,7 +147,7 @@ export default function InformationsPage() {
 
         {/* Home Page Section */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Home Page Features
           </h2>
           <p>
@@ -163,7 +163,7 @@ export default function InformationsPage() {
 
         {/* Categories */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Categories Page
           </h2>
           <p>
@@ -182,7 +182,7 @@ export default function InformationsPage() {
 
         {/* Series */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Series Page
           </h2>
           <p>
@@ -194,7 +194,7 @@ export default function InformationsPage() {
 
         {/* Actors */}
         <section>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-3 animate-gradient-red">
+          <h2 className="text-lg md:text-2xl font-bold text-white mb-3 animate-gradient-red">
             Actors and Persons
           </h2>
           <p>

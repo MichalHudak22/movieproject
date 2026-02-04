@@ -113,7 +113,7 @@ export default function Navbar() {
               <Link
                 href="/profile"
                 onClick={() => setDropdownOpen(false)}
-                className="flex items-center justify-center h-full w-full py-3 text-white font-semibold hover:bg-gray-800 transition"
+                className="flex items-center justify-center h-full border-b border-red-900 w-full py-3 text-white font-semibold hover:bg-gray-800 transition"
               >
                 Profile
               </Link>
