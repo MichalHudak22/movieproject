@@ -33,38 +33,36 @@ function getRank(votes: number) {
 }
 
 export default function ProfilePage() {
-  const { token, setToken } = useContext(AuthContext);
+  const { token, setToken, loadingAuth } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [userRank, setUserRank] = useState<string | null>(null);
   const [ratings, setRatings] = useState<Rating[]>([]);
   const router = useRouter();
 
+  // ✅ všetky hooky sa volajú vždy v rovnakom poradí
   useEffect(() => {
-  if (token === null) {
-    router.replace('/login');
-  }
-}, [token]);
+    if (!loadingAuth && !token) {
+      router.replace('/login');
+    }
+  }, [loadingAuth, token, router]);
 
   useEffect(() => {
     if (!token) return;
 
     const init = async () => {
       try {
-        // 1️⃣ načítame údaje používateľa
         const userRes = await fetch(`${API}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData: User = await userRes.json();
         setUser(userData);
 
-        // 2️⃣ načítame hodnotenia používateľa
         const ratingsRes = await fetch(`${API}/api/ratings/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data: Rating[] = await ratingsRes.json();
 
-        // 3️⃣ obohatíme hodnotenia o title, poster, averageRating
         const enriched: Rating[] = await Promise.all(
           data.map(async r => {
             try {
@@ -72,7 +70,6 @@ export default function ProfilePage() {
                 r.type === 'movie'
                   ? await getMovieDetails(Number(r.imdb_id))
                   : await getTVDetails(Number(r.imdb_id));
-
               const title = r.type === 'movie' ? details.title : details.name;
               const poster = details.poster_path ?? null;
 
@@ -84,7 +81,7 @@ export default function ProfilePage() {
                       (
                         allRatings.reduce((sum: number, x: any) => sum + x.rating, 0) /
                         allRatings.length
-                      ).toFixed(1),
+                      ).toFixed(1)
                     )
                   : null;
 
@@ -92,23 +89,16 @@ export default function ProfilePage() {
             } catch {
               return r;
             }
-          }),
+          })
         );
 
         setRatings(enriched);
 
-        // 4️⃣ načítame hlasovanie pre rank
         const leaderboardRes = await fetch(`${API}/api/leaderboard?type=all`);
         const leaderboardData = await leaderboardRes.json();
 
-        // nájdeme používateľa podľa username
         const currentUser = leaderboardData.find((u: any) => u.username === userData.username);
-        if (currentUser) {
-          const votes = Number(currentUser.votes_count);
-          setUserRank(getRank(votes));
-        } else {
-          setUserRank(getRank(0));
-        }
+        setUserRank(currentUser ? getRank(Number(currentUser.votes_count)) : getRank(0));
       } catch (err) {
         console.error(err);
       } finally {
@@ -118,6 +108,15 @@ export default function ProfilePage() {
 
     init();
   }, [token]);
+
+  // ✅ podmienky renderovania **po hookoch**
+  if (loadingAuth || loading) {
+    return <p className="text-white text-center mt-10">Loading...</p>;
+  }
+
+  if (!token || !user) {
+    return null;
+  }
 
 
   const handleRatingChange = async (
@@ -141,10 +140,10 @@ export default function ProfilePage() {
       const avg =
         allRatings.length > 0
           ? Number(
-              (
-                allRatings.reduce((a: number, b: any) => a + b.rating, 0) / allRatings.length
-              ).toFixed(1),
-            )
+            (
+              allRatings.reduce((a: number, b: any) => a + b.rating, 0) / allRatings.length
+            ).toFixed(1),
+          )
           : null;
 
       setRatings(prev => prev.map(r => (r.imdb_id === imdb_id ? { ...r, averageRating: avg } : r)));
@@ -170,15 +169,15 @@ export default function ProfilePage() {
 
   const getUrlType = (type: 'movie' | 'series') => (type === 'movie' ? 'movie' : 'series');
 
- // ak nie je token → nič nerenderuj (redirect už beží)
-if (!token) {
-  return null;
-}
+  // ak nie je token → nič nerenderuj (redirect už beží)
+  if (!token) {
+    return null;
+  }
 
-// loading len pre prihláseného
-if (loading || !user) {
-  return <p className="text-white text-center mt-10">Loading...</p>;
-}
+  // loading len pre prihláseného
+  if (loading || !user) {
+    return <p className="text-white text-center mt-10">Loading...</p>;
+  }
 
 
   return (

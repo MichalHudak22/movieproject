@@ -15,6 +15,7 @@ interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   logout: () => void;
+  loadingAuth: boolean; // <-- toto je nové
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -23,6 +24,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   setUser: () => {},
   logout: () => {},
+  loadingAuth: true, // <-- default hodnota
 });
 
 interface Props {
@@ -34,6 +36,7 @@ let logoutTimeout: NodeJS.Timeout | null = null;
 export const AuthProvider = ({ children }: Props) => {
   const [token, setTokenState] = useState<string | null>(null);
   const [user, setUserState] = useState<User | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true); // <-- tu
   const router = useRouter();
 
   const logout = () => {
@@ -47,51 +50,51 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   // načítanie tokenu a usera z localStorage pri mount
-useEffect(() => {
-  const storedToken = localStorage.getItem('token');
-  if (!storedToken) return;
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const expiry = localStorage.getItem('tokenExpiry');
 
-  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
-    headers: {
-      Authorization: `Bearer ${storedToken}`,
-    },
-  })
-    .then(res => {
-      if (!res.ok) throw new Error('Invalid token');
-      return res.json();
-    })
-    .then(user => {
-      setTokenState(storedToken);
-      setUserState(user);
-    })
-    .catch(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      setTokenState(null);
-      setUserState(null);
-    });
-}, []);
+    if (!storedToken || !expiry) {
+      setLoadingAuth(false);
+      return;
+    }
 
+    const remainingTime = Number(expiry) - Date.now();
+    if (remainingTime <= 0) {
+      logout();
+      setLoadingAuth(false);
+      return;
+    }
+
+    setTokenState(storedToken);
+    logoutTimeout = setTimeout(logout, remainingTime);
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+      headers: { Authorization: `Bearer ${storedToken}` },
+    })
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(user => setUserState(user))
+      .catch(logout)
+      .finally(() => setLoadingAuth(false));
+  }, []);
 
   // nastavenie tokenu + timeout na logout
   const setToken = (newToken: string | null, expiresInSeconds?: number) => {
-    if (newToken) {
-      console.log('Setting new token:', newToken);
+    if (newToken && expiresInSeconds) {
+      const expiryTime = Date.now() + expiresInSeconds * 1000;
       localStorage.setItem('token', newToken);
+      localStorage.setItem('tokenExpiry', expiryTime.toString());
       setTokenState(newToken);
 
       if (logoutTimeout) clearTimeout(logoutTimeout);
-      if (expiresInSeconds) {
-        logoutTimeout = setTimeout(() => {
-          console.log('Token expired, logging out...');
-          logout();
-        }, expiresInSeconds * 1000);
-      }
+      logoutTimeout = setTimeout(logout, expiresInSeconds * 1000);
     } else {
-      console.log('Removing token');
       localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiry');
       setTokenState(null);
-      if (logoutTimeout) clearTimeout(logoutTimeout);
     }
   };
 
@@ -106,7 +109,9 @@ useEffect(() => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, setToken, user, setUser, logout }}>
+    <AuthContext.Provider
+      value={{ token, setToken, user, setUser, logout, loadingAuth }} // <-- pridane loadingAuth
+    >
       {children}
     </AuthContext.Provider>
   );

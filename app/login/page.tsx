@@ -54,7 +54,7 @@ export default function LoginPage() {
       >
         <div>
           <h1 className="text-xl md:text-2xl font-bold mb-1 text-center">
-            Welcome back to <span className="animate-gradient-red">CinemaSpace</span>
+            Welcome back to <span className="animate-gradient-red text-xl">CinemaSpace</span>
           </h1>
 
           <p className="text-xs md:text-base text-center text-gray-200 mb-5">
