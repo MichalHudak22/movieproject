@@ -49,47 +49,61 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center text-white">
       <form
-        className="md:border border-red-800 bg-gray-950/70 p-8 lg:p-16 md:rounded-md shadow-md w-full max-w-lg"
+        className="md:border border-red-800/50 bg-black/80 p-8 lg:p-16 md:rounded-lg shadow-md w-full max-w-lg flex flex-col gap-3"
         onSubmit={handleLogin}
       >
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold mb-1 text-center">
+            Welcome back to <span className="animate-gradient-red">CinemaSpace</span>
+          </h1>
 
-        <label htmlFor="email" className="sr-only">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          autoComplete="email"
-          className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-          required
-        />
+          <p className="text-xs md:text-base text-center text-gray-200 mb-5">
+            Sign in and continue your cinematic journey 🎬
+          </p>
 
-        <label htmlFor="password" className="sr-only">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          autoComplete="current-password"
-          className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-700"
-          required
-        />
+        </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 bg-red-700 rounded hover:bg-red-600 transition"
-        >
-          Login
-        </button>
+        <div>
+          <label htmlFor="email" className="sr-only">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            autoComplete="email"
+            className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
+            required
+          />
+
+          <label htmlFor="password" className="sr-only">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
+            className="w-full p-2 mb-4 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-700"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-red-700 rounded hover:bg-red-600 transition"
+          >
+            Login
+          </button>
+
+        </div>
+
+
 
         <p className="mt-4 text-center text-gray-300">
           Don&apos;t have an account?{' '}
@@ -100,9 +114,8 @@ export default function LoginPage() {
 
         {message && (
           <p
-            className={`mt-4 text-center text-sm ${
-              verified === '1' ? 'text-green-500' : 'text-red-500'
-            }`}
+            className={`mt-4 text-center text-sm ${verified === '1' ? 'text-green-500' : 'text-red-500'
+              }`}
           >
             {message}
           </p>
