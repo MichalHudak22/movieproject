@@ -141,7 +141,7 @@ export default function Navbar() {
 
       {/* Mobile Overlay Menu */}
       {isOpen && (
-        <div className="fixed inset-x-0 top-[60px] bottom-0 bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center overflow-y-auto">
+        <div className="fixed inset-x-0 top-[60px] bottom-0 bg-black/85 backdrop-blur-sm z-[200] flex flex-col items-center justify-center overflow-y-auto lg:hidden">
           <ul className="flex flex-col gap-8 text-3xl text-white text-center font-bold">
             {['/', '/series', '/person', '/categories', '/informations'].map((path, idx) => {
               const name = ['Home', 'Series', 'Actors', 'Categories', 'Informations'][idx];
