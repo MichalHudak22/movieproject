@@ -47,13 +47,31 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   // načítanie tokenu a usera z localStorage pri mount
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+useEffect(() => {
+  const storedToken = localStorage.getItem('token');
+  if (!storedToken) return;
 
-    if (storedToken) setTokenState(storedToken);
-    if (storedUser) setUserState(JSON.parse(storedUser));
-  }, []);
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+    headers: {
+      Authorization: `Bearer ${storedToken}`,
+    },
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Invalid token');
+      return res.json();
+    })
+    .then(user => {
+      setTokenState(storedToken);
+      setUserState(user);
+    })
+    .catch(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setTokenState(null);
+      setUserState(null);
+    });
+}, []);
+
 
   // nastavenie tokenu + timeout na logout
   const setToken = (newToken: string | null, expiresInSeconds?: number) => {

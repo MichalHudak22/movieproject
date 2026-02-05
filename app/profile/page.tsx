@@ -41,6 +41,12 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
+  if (token === null) {
+    router.replace('/login');
+  }
+}, [token]);
+
+  useEffect(() => {
     if (!token) return;
 
     const init = async () => {
@@ -113,11 +119,6 @@ export default function ProfilePage() {
     init();
   }, [token]);
 
-  useEffect(() => {
-    if (token === null && !loading) {
-      router.push('/login');
-    }
-  }, [token, loading, router]);
 
   const handleRatingChange = async (
     imdb_id: string,
@@ -169,9 +170,16 @@ export default function ProfilePage() {
 
   const getUrlType = (type: 'movie' | 'series') => (type === 'movie' ? 'movie' : 'series');
 
-  if (loading || !user) {
-    return <p className="text-white text-center mt-10">Loading...</p>;
-  }
+ // ak nie je token → nič nerenderuj (redirect už beží)
+if (!token) {
+  return null;
+}
+
+// loading len pre prihláseného
+if (loading || !user) {
+  return <p className="text-white text-center mt-10">Loading...</p>;
+}
+
 
   return (
     <div className="min-h-screen bg-transparent text-white font-sans px-2 md:px-6 py-5 lg:py-8">
