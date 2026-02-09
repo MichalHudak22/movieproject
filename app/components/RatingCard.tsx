@@ -133,32 +133,28 @@ export default function RatingCard({
 
             {/* Options */}
             {open && (
-              <div className="absolute left-0 top-full z-[9999] mt-1 w-full bg-gray-900 rounded-md shadow-2xl border border-gray-700 max-h-48 overflow-y-auto">
-
+              <div className="absolute left-0 top-full z-[9999] w-full bg-gray-900 rounded-md shadow-2xl border border-gray-700 max-h-36 overflow-y-auto">
                 {Array.from({ length: 11 }, (_, i) => i).map(n => (
                   <div
                     key={n}
                     onClick={() => {
-                      onRatingChange(
-                        rating.imdb_id,
-                        rating.type,
-                        n
-                      );
+                      onRatingChange(rating.imdb_id, rating.type, n);
                       setOpen(false);
                     }}
                     className={`
-                      px-3 py-2 cursor-pointer transition
-                      ${n === rating.rating
+          px-2 py-1 cursor-pointer text-sm transition
+          ${n === rating.rating
                         ? 'bg-red-700 text-white'
                         : 'text-gray-300 hover:bg-red-600 hover:text-white'
                       }
-                    `}
+        `}
                   >
                     {n}
                   </div>
                 ))}
               </div>
             )}
+
           </div>
         )}
       </div>

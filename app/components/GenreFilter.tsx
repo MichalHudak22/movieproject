@@ -108,7 +108,7 @@ export default function GenreFilter() {
       {/* Zobraz výsledky iba ak sú vybrané žánre */}
       {selectedGenres.length > 0 && (
         <>
-          <h2 className="ext-xl md:text-3xl lg:text-5xl font-bold text-center my-4 text-gray-100">Filter by Genres</h2>
+          <h2 className="ext-xl md:text-3xl font-bold text-center my-4 text-gray-100">Filter by Genres</h2>
 
           {loading ? (
             <p className="text-gray-400 text-center mb-4">Loading movies...</p>

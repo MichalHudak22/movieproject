@@ -114,13 +114,16 @@ export default function MovieDetail({ params }: MovieDetailProps) {
       {/* Hlavný blok */}
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 mb-8">
         {/* Poster */}
+        {/* Poster */}
         <Image
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          width={500} // odhadnutá šírka podľa TMDB
-          height={750} // odhadnutá výška podľa TMDB (proporcie posteru)
-          className="rounded w-2/3 lg md:w-1/3"
+          width={500} // odhadnutá šírka TMDB posteru
+          height={750} // odhadnutá výška TMDB posteru
+          unoptimized
+          className="rounded-lg w-2/3 md:w-1/3 object-cover"
         />
+
 
         {/* Info */}
         <div className="md:w-2/3 flex flex-col gap-1 md:gap-2 text-xs md:text-sm lg:text-base">
