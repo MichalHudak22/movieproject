@@ -37,7 +37,7 @@ body::before {
 
 /* Utility trieda na textový gradient */
 .animate-gradient-red {
-  background: linear-gradient(90deg, #cf0000, #6d0000, #cf0000);
+  background: linear-gradient(90deg, #e20000, #810000, #e20000);
   background-size: 200% 200%;
   background-clip: text;
   -webkit-background-clip: text;
